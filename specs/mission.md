@@ -39,6 +39,6 @@ Vision · Quarterly Goals · Kanban Board · Research Archive (completed / ongoi
 - Not a replacement for the research outputs themselves; it links to them.
 
 ## Open questions
-- Access control: not needed initially (public repo); revisit if private content appears.
+- Access control: researcher and supervisor views are password-gated (Phase 1b); raw content in the public repo is not private. Real privacy is an open item before real content is added.
 - Single researcher (decided).
 - Update cadence expected by supervisors (README leaves "weekly / bi-weekly" undecided).
