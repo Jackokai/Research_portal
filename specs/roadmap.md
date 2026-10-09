@@ -15,10 +15,10 @@ Phases are ordered by dependency, not dates (the README gives none). Each phase 
 
 ## Phase 1b: Private views (password gate)
 Inserted before Phase 2 so private content is never rendered on an open URL. Spec: `2026-10-09-private-views/`.
-- [ ] Design tokens (light + dark) and a login page
-- [ ] Build-time password protection of `/` and `/supervisor/` (one password each); `/public/` stays open
-- [ ] CI leak check; deploy fails closed without secrets
-- [ ] README documents setup and limits (public repo means raw `content/` is public)
+- [x] Design tokens (light + dark) and a login page
+- [x] Build-time password protection of `/` and `/supervisor/` (one password each); `/public/` stays open
+- [x] CI leak check; deploy fails closed without secrets (live deploy with real secrets pending)
+- [x] README documents setup and limits (public repo means raw `content/` is public)
 
 ## Phase 2: Researcher workspace
 Depends on Phase 1b. Applies the design tokens (Apple-style look).
