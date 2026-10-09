@@ -5,7 +5,7 @@ Phases are ordered by dependency, not dates (the README gives none). Each phase 
 ## Phase 0: Foundations
 - [x] Confirm open decisions in `tech-stack.md` (access control, Kanban tool, editing workflow)
 - [x] Add README.md (done) and these specs
-- [x] Scaffold site, CI build, Pages deploy workflow (manual trigger; live deploy verification pending, see `2026-10-09-site-scaffold/validation.md`)
+- [x] Scaffold site, CI build, Pages deploy workflow (manual trigger; live deploy verified 2026-10-09, see `2026-10-09-site-scaffold/validation.md`)
 
 ## Phase 1: Content model
 - [ ] Define schemas: vision, quarterly goals, archive entries, feedback, requirements
