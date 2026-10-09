@@ -31,9 +31,9 @@ Depends on Phase 1b. Applies the design tokens (Apple-style look).
 - [x] Feedback items visible with open/addressed status, behind a feature toggle that is off by default (the Kanban covers day-to-day feedback)
 
 ## Phase 4: External view
-- [ ] Plain-language summary page (no jargon): the vision's plain summary plus published research; original README guidance in commit `e3d8b49`. No automated jargon check, only length bounds and a review checklist
-- [ ] Applications, reusable outputs, links to demos/datasets/tools: an `outputs` list on archive entries
-- [ ] Review step: external content flagged as publishable before it appears: two keys (`external` audience and `publishable: true`), samples never published, plus a post-build guard. Spec: `2026-10-09-external-view/`
+- [x] Plain-language summary page (no jargon): the vision's plain summary plus published research; original README guidance in commit `e3d8b49`. No automated jargon check, only length bounds and a review checklist
+- [x] Applications, reusable outputs, links to demos/datasets/tools: an `outputs` list on archive entries
+- [x] Review step: external content flagged as publishable before it appears: two keys (`external` audience and `publishable: true`), samples never published, plus a post-build guard. Spec: `2026-10-09-external-view/`
 
 ## Phase 5: Role-aware UI (the open requirement in README)
 - [ ] Single navigation that switches lens (researcher / supervisor / external)
