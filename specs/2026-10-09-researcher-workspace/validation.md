@@ -13,6 +13,7 @@ Mergeable when every item passes. Put command output or run links in the PR desc
 - [ ] Goals: current quarter first, then newest to oldest.
 - [ ] Archive: ongoing before completed; completed by `completedOn` descending.
 - [ ] Feedback and requirements: open before closed; newest first within each.
+- [ ] `editUrl`: builds `https://github.com/Jackokai/Research_portal/edit/<branch>/content/...`, keeps slashes, encodes spaces and special characters.
 - [ ] Percent formatting: 1/3 gives 33%, 0.5 gives 50%, 1 gives 100%.
 - [ ] Key result text: `current / target unit`.
 
@@ -21,13 +22,20 @@ Mergeable when every item passes. Put command output or run links in the PR desc
 - [ ] Current quarter (2026-Q4) is expanded; 2026-Q3 sits inside a collapsed `<details>`.
 - [ ] Sample Q4 objective 1 shows the correct derived values: papers 8/20, open questions 6 of the way from 10 to 2 (50%), plan approved 1/1; objective progress is the mean (about 63%) and label "in progress".
 - [ ] Sample Q4 objective 2 shows 0% and label "planned"; sample Q3 objective shows 100% and "done".
-- [ ] Archive shows the ongoing sample before the completed one, each with a working link, summary and body.
+- [ ] Archive shows the ongoing sample open; the completed sample sits in a collapsed `<details>` labelled with its count ("Completed (1)"); each entry has a working link, summary and body.
+- [ ] Every entry has an Edit link whose URL matches its source file under `content/` (checked for all 8 sample/real entries, including both goals files).
+- [ ] Edit links open in a new tab with `rel="noopener"`, and resolve on GitHub after the branch rename (checked by hand once).
 - [ ] Feedback shows the open sample before the addressed one; requirements shows the real entry with status open.
 - [ ] Every `sample: true` entry has a SAMPLE badge; the real requirement does not.
 - [ ] Audience appears as text on each entry.
 - [ ] Links and anchors carry the `/Research_portal/` base; `/supervisor/` and `/public/` still render and still show the stub notice; `/` does not.
 - [ ] External links use `rel="noopener"`.
 - [ ] An empty section renders its "Nothing here yet" line (tested once by temporarily removing a collection's entries, then reverted).
+
+## Decrypted-state behaviour (Chromium, `build:protected` with throwaway passwords, not committed)
+- [ ] After entering the researcher password, clicking each table-of-contents link scrolls to its section.
+- [ ] Loading `/#goals` and `/#archive` after login lands on the section (or, if the browser does not jump after decryption, this is documented as a known limit).
+- [ ] `<details>` for past quarters and completed archive entries toggle in the decrypted page.
 
 ## Look (Apple-style, minimalistic)
 - [ ] No hard-coded colours in components or pages; all colours come from `tokens.css` variables.
