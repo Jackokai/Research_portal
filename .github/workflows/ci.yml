@@ -19,6 +19,7 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build
+      - run: npm run check:external
       # Exercise the protection step with throwaway passwords (not secrets).
       - run: npm run build:protected
         env:

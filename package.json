@@ -12,7 +12,8 @@
     "check": "astro check && node scripts/check-content.ts && node scripts/check-contrast.ts && node scripts/check-colours.ts",
     "preview": "astro preview",
     "test": "node --test \"src/**/*.test.ts\"",
-    "build:protected": "astro build && node scripts/protect.ts && node scripts/check-protected.ts"
+    "build:protected": "astro build && node scripts/protect.ts && node scripts/check-protected.ts && node scripts/check-external.ts",
+    "check:external": "node scripts/check-external.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

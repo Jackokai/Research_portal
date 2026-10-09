@@ -43,6 +43,7 @@ jobs:
         run: |
           echo "::warning::Deploying WITHOUT password protection: / and /supervisor/ will be public."
           npm run build
+          npm run check:external
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
