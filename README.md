@@ -63,4 +63,4 @@ npm run preview   # serve the build at /Research_portal/
 ```
 
 - **CI** runs `check`, `test`, `build`, and `build:protected` with throwaway passwords on every pull request.
-- **Deploy** uses `build:protected` with the two secrets and is manual: Actions > "Deploy to GitHub Pages" > Run workflow. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.
+- **Deploy** uses `build:protected` with the two secrets and is manual. The run dialog has a "Password-protect" box, ticked by default; untick it only while testing with sample content, to publish `/` and `/supervisor/` as plain public pages (the run shows a warning): Actions > "Deploy to GitHub Pages" > Run workflow. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.

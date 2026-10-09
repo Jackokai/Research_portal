@@ -29,6 +29,9 @@ Put a password in front of the researcher view (`/`) and the supervisor view (`/
 | Design | Small tokens file now (light + dark); full restyle in Phase 2 |
 | Supervisor login method | Shared password (the earlier "decide later" is resolved by this approach) |
 
+## Deploy opt-out (added after first use)
+The manual deploy has a `protect` input, ticked by default. Unticking it runs the plain `npm run build` and publishes `/` and `/supervisor/` unencrypted, with a workflow warning. This exists so the researcher can look at pages while testing with sample content. The default stays fail-closed; the opt-out is a per-run, visible choice, not a secret removal. Turn it off again before real private material is added.
+
 ## Limits (stated plainly; repeated in the README)
 1. **The repo is public.** Anything committed under `content/` is readable on GitHub regardless of the page passwords. The password protects the rendered pages only. Real researcher or supervisor material must not be committed until content moves to a private source (options recorded in `tech-stack.md`).
 2. **Ciphertext is public.** Anyone can download the encrypted page and try passwords offline. Protection is only as strong as the password: minimum length enforced, a random multi-word passphrase recommended.

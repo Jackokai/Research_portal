@@ -4,6 +4,11 @@ name: Deploy to GitHub Pages
 # To deploy automatically, add:  push: { branches: [<default-branch>] }
 on:
   workflow_dispatch:
+    inputs:
+      protect:
+        description: 'Password-protect / and /supervisor/ (untick only while testing with sample content)'
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -25,11 +30,17 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      # Fails closed: a missing, empty or weak password secret stops the deploy before upload.
-      - run: npm run build:protected
+      # Default (protect ticked) fails closed: a missing, empty or weak password secret stops the deploy before upload.
+      - if: ${{ inputs.protect }}
+        run: npm run build:protected
         env:
           RESEARCHER_PASSWORD: ${{ secrets.RESEARCHER_PASSWORD }}
           SUPERVISOR_PASSWORD: ${{ secrets.SUPERVISOR_PASSWORD }}
+      # Explicit opt-out for testing: publishes / and /supervisor/ as plain, public pages.
+      - if: ${{ !inputs.protect }}
+        run: |
+          echo "::warning::Deploying WITHOUT password protection: / and /supervisor/ will be public."
+          npm run build
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
