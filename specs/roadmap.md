@@ -8,21 +8,22 @@ Phases are ordered by dependency, not dates (the README gives none). Each phase 
 - [x] Scaffold site, CI build, Pages deploy workflow (manual trigger; live deploy verified 2026-10-09, see `2026-10-09-site-scaffold/validation.md`)
 
 ## Phase 1: Content model
-- [ ] Define schemas: vision, quarterly goals, archive entries, feedback, requirements
-- [ ] Migrate README placeholders into `content/` with an `audience` field
-- [ ] CI validates schemas and links
+- [x] Define schemas: vision, quarterly goals (as OKRs), archive entries, feedback, requirements
+- [x] Migrate README placeholders into `content/` with an `audience` field (as sample entries)
+- [x] CI validates schemas (link checking deferred, see `2026-10-09-content-model/requirements.md`)
+- [ ] CI validates links (deferred)
 
 ## Phase 2: Researcher workspace
 - [ ] Vision, quarterly goals (current + past), archive (ongoing / completed)
 - [ ] Feedback log and requirements with status
 
 ## Phase 3: Supervisor view
-- [ ] Orientation page: current goals, recent archive items, update cadence, contact
+- [ ] Orientation page: current goals, recent archive items, update cadence, contact (cadence and contact have no schema yet; text was in the original README, commit `e3d8b49`)
 - [ ] Kanban board integration (view, add cards, comment)
 - [ ] Feedback items visible with open/addressed status
 
 ## Phase 4: External view
-- [ ] Plain-language summary page (no jargon)
+- [ ] Plain-language summary page (no jargon); the original README's external-audience guidance is in commit `e3d8b49`
 - [ ] Applications, reusable outputs, links to demos/datasets/tools
 - [ ] Review step: external content flagged as publishable before it appears
 

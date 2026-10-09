@@ -47,6 +47,7 @@ Rules enforced by the schemas:
 - `summaryPlain` on goals is required **per objective** when the quarter file's `audience` includes `external`.
 - `completedOn` required when archive `status` is completed, and absent when ongoing.
 - Exactly one quarter file has `current: true`.
+- Dates must be **quoted** YAML strings. Unquoted dates parse to Date objects, and an impossible one (2026-13-40) was observed to pass validation (exit 0; the cause is probably the parser rolling it over to a valid date, not confirmed); the schema rejects Date objects outright.
 - Unknown fields are rejected, so typos fail the build instead of being silently ignored.
 - Sample entries carry `sample: true` and a visible "SAMPLE" marker in their title/text.
 
