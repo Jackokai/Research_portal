@@ -31,13 +31,15 @@ jobs:
       - run: npm ci
       - run: npm run check
       # Default (protect ticked) fails closed: a missing, empty or weak password secret stops the deploy before upload.
-      - if: ${{ inputs.protect }}
+      # Fail-closed: protection is skipped ONLY when the input is exactly 'false'. A missing input (for example
+      # a re-run of an older run) counts as protected, because an empty value is not the string 'false'.
+      - if: ${{ format('{0}', inputs.protect) != 'false' }}
         run: npm run build:protected
         env:
           RESEARCHER_PASSWORD: ${{ secrets.RESEARCHER_PASSWORD }}
           SUPERVISOR_PASSWORD: ${{ secrets.SUPERVISOR_PASSWORD }}
       # Explicit opt-out for testing: publishes / and /supervisor/ as plain, public pages.
-      - if: ${{ !inputs.protect }}
+      - if: ${{ format('{0}', inputs.protect) == 'false' }}
         run: |
           echo "::warning::Deploying WITHOUT password protection: / and /supervisor/ will be public."
           npm run build
