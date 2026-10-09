@@ -1,0 +1,18 @@
+audience: [researcher, supervisor, external]
+sample: true
+quarter: 2026-Q4
+current: true
+endDate: "2026-12-31"
+objectives:
+  - title: "SAMPLE: Establish the research foundation"
+    description: "Replace with a qualitative, inspiring objective."
+    summaryPlain: "SAMPLE: Plain-language version of this objective for outside readers."
+    keyResults:
+      - { title: "Papers reviewed", unit: papers, start: 0, target: 20, current: 8 }
+      - { title: "Open questions in the backlog", unit: questions, start: 10, target: 2, current: 6 }
+      - { title: "Research plan approved by supervisor", unit: milestone, start: 0, target: 1, current: 1 }
+  - title: "SAMPLE: Prove the approach on a small case"
+    summaryPlain: "SAMPLE: Plain-language version of this objective for outside readers."
+    keyResults:
+      - { title: "Pilot experiments run", unit: experiments, start: 0, target: 5, current: 0 }
+      - { title: "Draft write-up shared", unit: milestone, start: 0, target: 1, current: 0 }

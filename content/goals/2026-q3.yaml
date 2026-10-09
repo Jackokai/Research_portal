@@ -1,0 +1,10 @@
+audience: [researcher, supervisor]
+sample: true
+quarter: 2026-Q3
+current: false
+endDate: "2026-09-30"
+objectives:
+  - title: "SAMPLE: Scope the research question"
+    keyResults:
+      - { title: "Background papers read", unit: papers, start: 0, target: 10, current: 10 }
+      - { title: "Scope note agreed with supervisor", unit: milestone, start: 0, target: 1, current: 1 }
