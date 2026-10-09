@@ -19,3 +19,8 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build
+      # Exercise the protection step with throwaway passwords (not secrets).
+      - run: npm run build:protected
+        env:
+          RESEARCHER_PASSWORD: ci-throwaway-researcher-1
+          SUPERVISOR_PASSWORD: ci-throwaway-supervisor-1
