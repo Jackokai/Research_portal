@@ -1,0 +1,22 @@
+---
+// Link-out to the GitHub Project board, plus a pre-filled new-issue link. No embed, no API.
+import { newCardUrl } from '../lib/repo';
+import Section from './Section.astro';
+
+interface Props {
+  boardUrl?: string;
+}
+const { boardUrl } = Astro.props;
+---
+<Section id="board" title="Kanban board">
+  <div class="card">
+    <p>Day-to-day interaction happens on the board. Add a card, or comment on an existing one.</p>
+    <div class="actions">
+      {boardUrl
+        ? <a class="button" href={boardUrl} target="_blank" rel="noopener">Open board</a>
+        : <p class="notice" data-board="unset">Board link not set</p>}
+      <a class="button button-quiet" href={newCardUrl()} target="_blank" rel="noopener">Add a card</a>
+    </div>
+    <p class="muted small">Cards are GitHub issues in a public repository, so what you write there is public. You need a GitHub account.</p>
+  </div>
+</Section>

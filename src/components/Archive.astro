@@ -6,15 +6,24 @@ import Section from './Section.astro';
 interface Props {
   ongoing: CollectionEntry<'archive'>[];
   completed: CollectionEntry<'archive'>[]; // newest completedOn first
+  editable?: boolean;
+  collapseCompleted?: boolean;
+  title?: string;
 }
-const { ongoing, completed } = Astro.props;
+const { ongoing, completed, editable = true, collapseCompleted = true, title = 'Research archive' } = Astro.props;
 ---
-<Section id="archive" title="Research archive" empty={ongoing.length + completed.length === 0}>
-  {ongoing.map((e) => <ArchiveEntry entry={e} />)}
-  {completed.length > 0 && (
+<Section id="archive" title={title} empty={ongoing.length + completed.length === 0}>
+  {ongoing.map((e) => <ArchiveEntry entry={e} editable={editable} />)}
+  {completed.length > 0 && !collapseCompleted && (
+    <>
+      <h3 class="group-label">Recently completed</h3>
+      {completed.map((e) => <ArchiveEntry entry={e} editable={editable} />)}
+    </>
+  )}
+  {completed.length > 0 && collapseCompleted && (
     <details class="group">
       <summary>Completed ({completed.length})</summary>
-      {completed.map((e) => <ArchiveEntry entry={e} />)}
+      {completed.map((e) => <ArchiveEntry entry={e} editable={editable} />)}
     </details>
   )}
 </Section>

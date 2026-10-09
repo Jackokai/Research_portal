@@ -5,15 +5,16 @@ import Section from './Section.astro';
 
 interface Props {
   entries: CollectionEntry<'feedback'>[]; // already ordered: open first, newest first
+  editable?: boolean;
 }
-const { entries } = Astro.props;
+const { entries, editable = true } = Astro.props;
 ---
 <Section id="feedback" title="Feedback" empty={entries.length === 0}>
   {entries.map((e) => (
     <article class="card">
       <div class="card-head">
         <h3 class="card-title">{e.data.from}</h3>
-        <EntryMeta audience={e.data.audience} sample={e.data.sample} status={e.data.status} filePath={e.filePath} />
+        <EntryMeta audience={e.data.audience} sample={e.data.sample} status={e.data.status} filePath={e.filePath} editable={editable} />
       </div>
       <p class="muted small card-date">{e.data.date}</p>
       <p class="entry-text">{e.data.feedback}</p>

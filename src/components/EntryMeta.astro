@@ -8,13 +8,14 @@ interface Props {
   sample?: boolean;
   status?: string;
   filePath?: string;
+  editable?: boolean;
 }
-const { audience, sample, status, filePath } = Astro.props;
+const { audience, sample, status, filePath, editable = true } = Astro.props;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 ---
 <div class="meta">
   {sample && <Badge kind="sample" label="SAMPLE" />}
   {status && <Badge kind="status" label={cap(status)} />}
   {audience.map((a) => <Badge label={cap(a)} />)}
-  <EditLink filePath={filePath} />
+  {editable && <EditLink filePath={filePath} />}
 </div>

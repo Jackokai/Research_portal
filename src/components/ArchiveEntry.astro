@@ -4,15 +4,16 @@ import EntryMeta from './EntryMeta.astro';
 
 interface Props {
   entry: CollectionEntry<'archive'>;
+  editable?: boolean;
 }
-const { entry } = Astro.props;
+const { entry, editable = true } = Astro.props;
 const { Content } = await render(entry);
 const { title, status, completedOn, summary, link, audience, sample } = entry.data;
 ---
 <article class="card">
   <div class="card-head">
     <h3 class="card-title">{title}</h3>
-    <EntryMeta audience={audience} sample={sample} status={status} filePath={entry.filePath} />
+    <EntryMeta audience={audience} sample={sample} status={status} filePath={entry.filePath} editable={editable} />
   </div>
   {completedOn && <p class="muted small card-date">Completed {completedOn}</p>}
   <p>{summary}</p>
