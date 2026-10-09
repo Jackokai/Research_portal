@@ -1,45 +1,44 @@
 ---
 import '../styles/tokens.css';
+import '../styles/global.css';
 
 interface Props {
   title: string;
   audience: string;
+  stub?: boolean;
 }
-const { title, audience } = Astro.props;
+const { title, audience, stub = true } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const nav = [
   { href: `${base}/`, label: 'Researcher' },
   { href: `${base}/supervisor/`, label: 'Supervisor' },
   { href: `${base}/public/`, label: 'Public' },
 ];
+const here = Astro.url.pathname;
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <title>{title} · Research Portal</title>
   </head>
   <body>
-    <header>
-      <strong>Research Portal</strong>
-      <nav>
-        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+    <header class="site-header">
+      <span class="brand">Research Portal</span>
+      <nav class="site-nav" aria-label="Views">
+        {nav.map((n) => <a href={n.href} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>)}
       </nav>
     </header>
     <main>
-      <h1>{title}</h1>
-      <p class="audience">Audience: {audience}</p>
+      <div class="page-head">
+        <h1>{title}</h1>
+        <p class="muted">Audience: {audience}</p>
+        <slot name="head" />
+      </div>
       <slot />
-      <p class="stub">Stub page. Real content arrives in Phase 1+.</p>
+      {stub && <p class="muted"><em>Stub page. Real content arrives in a later phase.</em></p>}
     </main>
   </body>
 </html>
-<style is:global>
-  body { font-family: system-ui, sans-serif; max-width: 42rem; margin: 0 auto; padding: 1rem; line-height: 1.5; color: #1a1a1a; background: #fff; }
-  header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #ddd; padding-bottom: .5rem; flex-wrap: wrap; gap: .5rem; }
-  nav { display: flex; gap: 1rem; }
-  a { color: #0b5cad; }
-  .audience { color: #555; }
-  .stub { color: #777; font-style: italic; }
-</style>
