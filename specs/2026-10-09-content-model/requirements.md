@@ -25,6 +25,9 @@ Turn the README's template sections into typed, validated content that later pha
 | Migrated content | README placeholders kept as clearly marked **sample** entries |
 | `audience` | Array per entry: any of `researcher`, `supervisor`, `external` |
 | README | Slimmed; `content/` is the only home of content |
+| Goals format | **OKR**: objectives with key results (added after first review) |
+| Key result measure | Numeric: `start`, `target`, `current`; progress is computed |
+| Structure | 1-5 objectives per quarter, 2-5 key results each; status is derived, never stored; target date at quarter level |
 
 ## Proposed schema design (assumptions, review in PR)
 All dates are `YYYY-MM-DD`. Every entry has `audience` (non-empty array) and optional `sample: true`.
@@ -32,17 +35,27 @@ All dates are `YYYY-MM-DD`. Every entry has `audience` (non-empty array) and opt
 | Collection | Shape | Fields |
 |------------|-------|--------|
 | `vision` | one Markdown document | body; `summaryPlain` |
-| `goals` | one YAML file per quarter (`2026-q4.yaml`) | `quarter` (`YYYY-Qn`), `current` (bool), `goals[]`: `title`, `status` (planned / in-progress / done), `targetDate` |
+| `goals` (OKRs) | one YAML file per quarter (`2026-q4.yaml`) | `quarter` (`YYYY-Qn`), `current` (bool), `endDate`, `objectives[]` (1-5): `title`, `description`, `summaryPlain`, `keyResults[]` (2-5): `title`, `unit`, `start`, `target`, `current` |
 | `archive` | one Markdown file per entry | `title`, `status` (ongoing / completed), `completedOn` (required iff completed), `summary`, `link`, `summaryPlain` |
 | `feedback` | one YAML file per entry | `date`, `from`, `feedback`, `status` (open / addressed) |
 | `requirements` | one YAML file per entry | `date`, `requirement`, `status` (open / done) |
 
 Rules enforced by the schemas:
 - `summaryPlain` (plain-language text for outsiders) is **required when `audience` includes `external`**. It is a separate field, not a second copy of the entry.
+- OKR rules: `target` must differ from `start` (decreasing metrics are allowed, e.g. 10 → 2); a milestone KR uses `start: 0`, `target: 1`; `endDate` must fall inside the quarter named by `quarter`; objectives hold 1-5 and key results 2-5 (OKR convention, enforced).
+- `status` is **not a stored field** for objectives or key results. A stored status could contradict the numbers.
+- `summaryPlain` on goals is required **per objective** when the quarter file's `audience` includes `external`.
 - `completedOn` required when archive `status` is completed, and absent when ongoing.
 - Exactly one quarter file has `current: true`.
 - Unknown fields are rejected, so typos fail the build instead of being silently ignored.
 - Sample entries carry `sample: true` and a visible "SAMPLE" marker in their title/text.
+
+## OKR derivation (defined here, implemented as one shared function)
+- Key result progress = `(current − start) / (target − start)`, clamped to 0–1.
+- Objective progress = mean of its key results' progress.
+- Derived label: **planned** if every key result is at `start`; **done** if every key result is at 1; otherwise **in progress**.
+- Phase 2+ pages call this function; no page recomputes it.
+- Overshoot is clamped, so a KR at 150% of target shows 100%. This hides over-delivery; revisit if it matters.
 
 ## Context and constraints
 - Phase 0 left a working Astro 7 + TypeScript site; CI runs `npm run check` and `npm run build` on PRs.
@@ -59,4 +72,6 @@ Deleting the README's "For Supervisors" and "For External Audience" sections rem
 
 ## Risks
 - Astro content-layer APIs differ by version. Mitigation: implement against the installed version and check its docs, not memory.
+- Fixed 2-5 key result bounds may not suit every research quarter. They are cheap to loosen later but expensive to tighten once content exists, so they start strict.
+- Numeric KRs fit research milestones awkwardly. The 0 → 1 convention is the workaround; if it proves clumsy in practice, revisit before Phase 2 renders it.
 - Over-strict schemas frustrate the single researcher. Mitigation: error messages must name the file and field (validated).
