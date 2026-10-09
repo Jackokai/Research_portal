@@ -1,0 +1,8 @@
+# Site settings. Not research content, so no `audience`. Changes take effect on the next deploy.
+features:
+  # The Feedback section on / and /supervisor/. Off while the Kanban board covers day-to-day feedback.
+  feedback: false
+board:
+  # Paste the URL of the GitHub Project board here once it exists, e.g.
+  # url: https://github.com/users/Jackokai/projects/1
+  # Until then the supervisor page shows "Board link not set".
