@@ -27,6 +27,25 @@ Rules the build enforces (errors name the file and field):
 
 Entries marked `sample: true` (and "SAMPLE" in their text) are placeholders from the original template. Replace or delete them.
 
+## Private views
+
+`/` (researcher) and `/supervisor/` are password-protected; `/public/` is open. Each protected page is encrypted at build time and decrypted in the browser. Passwords are GitHub Actions secrets, never committed.
+
+**Setup (once):** repo Settings > Secrets and variables > Actions > New repository secret, add both:
+- `RESEARCHER_PASSWORD`: for `/`
+- `SUPERVISOR_PASSWORD`: for `/supervisor/`
+
+Each must be at least 16 characters and they must differ. A random passphrase of four or more words is a good choice. The deploy refuses to publish if either is missing, empty or too short.
+
+**Rotating a password:** change the secret, then run the deploy workflow again. Supervisors who ticked "Remember on this device" are asked again.
+
+**Limits, in plain words:**
+- **The repo is public.** The password protects the rendered pages only. Everything in `content/` is readable on GitHub by anyone. Do not commit real names, feedback or unpublished research until real privacy exists (see `specs/tech-stack.md`).
+- **The encrypted page is public too**, so anyone can try passwords against it offline. Only a strong password protects it.
+- **Shared passwords.** Anyone who knows one can pass it on. Changing the secret revokes it for future visits, but a copy of the encrypted page someone already saved still opens with the old password.
+- **No side channels.** Private data must only ever appear inside the encrypted HTML, never in separate data files, feeds or sitemaps. The build fails if such files appear.
+- Page titles and navigation of protected pages are visible in the repo source, not on the live prompt.
+
 ## Developing
 
 Requires Node 22 (see `.nvmrc`).
@@ -34,11 +53,12 @@ Requires Node 22 (see `.nvmrc`).
 ```bash
 npm ci            # install
 npm run dev       # local dev server
-npm run check     # typecheck, content schemas, cross-file content rules
-npm test          # unit tests (OKR progress)
-npm run build     # build to dist/
+npm run check     # typecheck, content schemas, cross-file rules, colour contrast
+npm test          # unit tests
+npm run build     # plain build to dist/ (dev, PRs)
+RESEARCHER_PASSWORD=... SUPERVISOR_PASSWORD=... npm run build:protected   # build + encrypt + verify
 npm run preview   # serve the build at /Research_portal/
 ```
 
-- **CI** runs `check`, `test` and `build` on every pull request.
-- **Deploy** is manual: Actions > "Deploy to GitHub Pages" > Run workflow. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.
+- **CI** runs `check`, `test`, `build`, and `build:protected` with throwaway passwords on every pull request.
+- **Deploy** uses `build:protected` with the two secrets and is manual: Actions > "Deploy to GitHub Pages" > Run workflow. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.
