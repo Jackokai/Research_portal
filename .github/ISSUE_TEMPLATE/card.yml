@@ -1,0 +1,26 @@
+name: Board card
+description: Add a card to the research board (a question, a task or a meeting note)
+title: "[Card] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issues in this repository are **public**. Anything you write here, including comments, can be read by anyone.
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: The question, task or meeting note.
+      placeholder: "e.g. Can you share the draft before our next meeting?"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: Optional context.
+  - type: input
+    id: when
+    attributes:
+      label: Date or deadline
+      description: Optional, e.g. 2026-11-15.
