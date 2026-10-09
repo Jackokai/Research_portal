@@ -25,7 +25,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - run: npm run build
+      # Fails closed: a missing, empty or weak password secret stops the deploy before upload.
+      - run: npm run build:protected
+        env:
+          RESEARCHER_PASSWORD: ${{ secrets.RESEARCHER_PASSWORD }}
+          SUPERVISOR_PASSWORD: ${{ secrets.SUPERVISOR_PASSWORD }}
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist

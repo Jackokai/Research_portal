@@ -9,9 +9,10 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "check": "astro check && node scripts/check-content.ts",
+    "check": "astro check && node scripts/check-content.ts && node scripts/check-contrast.ts",
     "preview": "astro preview",
-    "test": "node --test \"src/**/*.test.ts\""
+    "test": "node --test \"src/**/*.test.ts\"",
+    "build:protected": "astro build && node scripts/protect.ts && node scripts/check-protected.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.4",
+    "staticrypt": "3.5.4",
     "yaml": "^2.9.1"
   }
 }

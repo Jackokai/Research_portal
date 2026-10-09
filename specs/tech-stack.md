@@ -4,6 +4,9 @@
 
 ## Decisions made
 - **Privacy:** not required initially. Repo is now public (2026-10-09), which makes free GitHub Pages available; Cloudflare/Netlify not needed. No unpublished or sensitive material goes in the repo.
+- **Private views (2026-10-09):** `/` (researcher) and `/supervisor/` are password-protected by build-time client-side encryption (one password per view, GitHub secrets); `/public/` stays open. Host stays GitHub Pages with a public repo. See `2026-10-09-private-views/`.
+- **Known limit:** the raw files in `content/` remain public on GitHub. Do not commit real private material until a stronger option is adopted.
+- **Look:** minimalistic, Apple-style: system font stack, whitespace, light + automatic dark mode. No Apple fonts or branding.
 - **Researcher:** single researcher.
 - **Kanban/collaboration:** GitHub (Projects + Issues). Supervisors create a GitHub account if they don't have one.
 - **External audience:** read-only static page, no account needed. Feedback from outsiders is out of scope for now (would need an account for Issues, or a separate mailto/form).
@@ -35,7 +38,7 @@ Static pages generated from the same collections, filtered by a `audience` field
 - `/public` plain-language view
 
 ## Revisit later
-- Access control if private content is ever needed: private repo with private Pages, auth in front (e.g. Cloudflare Access), or publish only the external view.
+- Real privacy of private content (needed before real researcher or supervisor material is added): a second private content repo pulled at build time, encrypted content files decrypted in CI, or a host with real access control (private repo plus Cloudflare Pages and Access; GitHub's private Pages needs Enterprise Cloud). The password gate does not replace any of these.
 - Whether the researcher needs a UI editor instead of Markdown/YAML.
 - Astro vs. a lighter generator; Astro is proposed for typed content collections, not the only option.
 
