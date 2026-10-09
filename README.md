@@ -122,5 +122,5 @@ npm run preview   # serve the build at /Research_portal/
 ```
 
 - **CI** runs `check` and `build` on every pull request.
-- **Deploy** is manual: Actions > "Deploy to GitHub Pages" > Run workflow. One-time setup: repo Settings > Pages > Source: GitHub Actions. To deploy automatically on merge, add `push: { branches: [main] }` to `.github/workflows/deploy.yml`.
+- **Deploy** is manual: Actions > "Deploy to GitHub Pages" > Run workflow. One-time setup: repo Settings > Pages > Source: GitHub Actions. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.
 - Live site: https://jackokai.github.io/Research_portal/

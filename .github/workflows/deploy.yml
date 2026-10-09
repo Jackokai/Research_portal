@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages
 
 # Manual trigger by design (see specs/2026-10-09-site-scaffold/requirements.md).
-# To deploy automatically, add:  push: { branches: [main] }
+# To deploy automatically, add:  push: { branches: [<default-branch>] }
 on:
   workflow_dispatch:
 

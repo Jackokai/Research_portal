@@ -39,7 +39,7 @@ The roadmap lists "Pages deploy", but "deploy on merge" was not selected as a CI
 - Pages must be enabled once in repo settings (Source: GitHub Actions). This is a manual step outside the code.
 
 ## Assumptions to verify
-- Default branch name (assumed `main`); confirm in repo settings.
+- Default branch is `claude/busy-pascal-pkrmgy` (confirmed via GitHub API, 2026-10-09); there is no `main`. If it is renamed, the Pages `github-pages` environment rule and the deploy trigger must follow.
 - Repo owner/name for the Pages URL is `jackokai/Research_portal` (taken from the session's repo scope; case in the URL path matters).
 - Node LTS is available in Actions; version pinned via `.nvmrc`/`engines`.
 
