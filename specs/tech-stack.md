@@ -1,6 +1,13 @@
 # Tech Stack
 
-> The README prescribes no technology. Everything below is a **proposal** derived from its requirements. Items marked *Decision needed* must be confirmed before implementation.
+> The README prescribes no technology. Everything below is a **proposal** derived from its requirements, except the decisions recorded here.
+
+## Decisions made
+- **Privacy:** not required initially. Public repo + public GitHub Pages. No unpublished or sensitive material goes in the repo.
+- **Researcher:** single researcher.
+- **Kanban/collaboration:** GitHub (Projects + Issues). Supervisors create a GitHub account if they don't have one.
+- **External audience:** read-only static page, no account needed. Feedback from outsiders is out of scope for now (would need an account for Issues, or a separate mailto/form).
+- **Build vs. buy:** GitHub is the backend (storage, auth, comments, history); the role-aware front end is custom.
 
 ## Constraints derived from the README
 - Content lives in the repository (it "is the presentation tool").
@@ -27,13 +34,10 @@ Static pages generated from the same collections, filtered by a `audience` field
 - `/supervisor` overview + board link
 - `/public` plain-language view
 
-## Key trade-off (Decision needed)
-Static hosting on GitHub Pages is **public by default**; a "view" is not access control. If supervisor/researcher content must be private, options are: (a) private repo + Pages on a plan that supports private Pages, (b) put auth in front (e.g. Cloudflare Access), (c) publish only the external view and keep the rest repo-only. Until decided, assume **no confidential content in the repo**.
-
-## Other decisions needed
-1. Is GitHub Projects acceptable for supervisors (requires GitHub accounts)? Alternative: a Markdown board in-repo, which loses native commenting.
-2. Is the researcher comfortable editing Markdown/YAML, or is a UI editor required?
-3. Astro vs. a lighter option (plain Markdown + a small build script). Astro is proposed because of typed content collections; it is not the only viable choice.
+## Revisit later
+- Access control if private content is ever needed: private repo with private Pages, auth in front (e.g. Cloudflare Access), or publish only the external view.
+- Whether the researcher needs a UI editor instead of Markdown/YAML.
+- Astro vs. a lighter generator; Astro is proposed for typed content collections, not the only option.
 
 ## Out of scope
 Custom backend, database, user management, real-time sync.

@@ -39,6 +39,6 @@ Vision · Quarterly Goals · Kanban Board · Research Archive (completed / ongoi
 - Not a replacement for the research outputs themselves; it links to them.
 
 ## Open questions
-- Is access control needed (e.g. private supervisor/researcher content vs. public external view)?
-- Single researcher only, or several?
+- Access control: not needed initially (public repo); revisit if private content appears.
+- Single researcher (decided).
 - Update cadence expected by supervisors (README leaves "weekly / bi-weekly" undecided).
