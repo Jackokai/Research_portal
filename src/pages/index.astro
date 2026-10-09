@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Archive from '../components/Archive.astro';
 import Feedback from '../components/Feedback.astro';
 import Goals from '../components/Goals.astro';
@@ -7,6 +7,7 @@ import Requirements from '../components/Requirements.astro';
 import Vision from '../components/Vision.astro';
 import Base from '../layouts/Base.astro';
 import { openFirstNewest, orderGoals, splitArchive } from '../lib/order';
+import { resolveSettings } from '../lib/settings';
 
 const [vision, goals, archive, feedback, requirements] = await Promise.all([
   getCollection('vision'),
@@ -16,11 +17,12 @@ const [vision, goals, archive, feedback, requirements] = await Promise.all([
   getCollection('requirements'),
 ]);
 const { ongoing, completed } = splitArchive(archive);
+const showFeedback = resolveSettings((await getEntry('settings', 'settings'))?.data).features.feedback;
 const sections = [
   ['vision', 'Vision'],
   ['goals', 'Goals'],
   ['archive', 'Archive'],
-  ['feedback', 'Feedback'],
+  ...(showFeedback ? [['feedback', 'Feedback']] : []),
   ['requirements', 'Requirements'],
 ];
 ---
@@ -33,6 +35,6 @@ const sections = [
   <Vision entries={vision} />
   <Goals quarters={orderGoals(goals)} />
   <Archive ongoing={ongoing} completed={completed} />
-  <Feedback entries={openFirstNewest(feedback, 'open')} />
+  {showFeedback && <Feedback entries={openFirstNewest(feedback, 'open')} />}
   <Requirements entries={openFirstNewest(requirements, 'open')} />
 </Base>
