@@ -1,0 +1,9 @@
+audience: [researcher]
+date: "2026-10-08"
+requirement: >-
+  Intuitive, role-aware user interface that presents the research appropriately
+  depending on the audience (researcher workspace, supervisor overview + Kanban
+  interaction, external layman's view). The same underlying content should be
+  accessible through different lenses so the repository itself becomes the
+  presentation tool.
+status: open

@@ -1,0 +1,6 @@
+audience: [researcher, supervisor]
+sample: true
+date: "2026-10-01"
+from: "Sample Supervisor"
+feedback: "SAMPLE: Summary of a comment that is still open."
+status: open
