@@ -9,12 +9,17 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "check": "astro check",
-    "preview": "astro preview"
+    "check": "astro check && node scripts/check-content.ts",
+    "preview": "astro preview",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
     "astro": "^7.3.8",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "yaml": "^2.9.1"
   }
 }
