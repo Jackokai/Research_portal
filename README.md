@@ -17,6 +17,7 @@ Live site: https://jackokai.github.io/Research_portal/
 | `content/archive/` | One file per research item, ongoing or completed | Markdown with front matter |
 | `content/feedback/` | One file per piece of feedback | YAML |
 | `content/requirements/` | One file per requirement raised by the researcher | YAML |
+| `content/settings.yaml` | Site settings: the feedback toggle and the board URL (no `audience`) | YAML |
 
 Rules the build enforces (errors name the file and field):
 - Every entry has `audience`: a list of `researcher`, `supervisor` and/or `external`.
@@ -28,6 +29,15 @@ Rules the build enforces (errors name the file and field):
 The researcher workspace (`/`) shows all of this on one page, and every entry has an **Edit** link that opens its source file in GitHub's web editor. Interface colours come only from `src/styles/tokens.css`; `npm run check` fails on hard-coded colours.
 
 Entries marked `sample: true` (and "SAMPLE" in their text) are placeholders from the original template. Replace or delete them.
+
+## Supervisor view and the Kanban board
+
+`/supervisor/` shows the current quarter's goals and the recent research (ongoing entries plus the three latest completed), using only entries whose `audience` includes `supervisor`. Researcher-only entries never appear in its HTML, even if the password is switched off.
+
+- **Board link:** create a GitHub Project board, then paste its URL into `content/settings.yaml` under `board.url`. Until you do, the page shows "Board link not set".
+- **Add a card:** the page links to a new-issue form (`.github/ISSUE_TEMPLATE/card.yml`). Issues in this public repository are **public**, and so are comments on them. For a new issue to land on the board automatically, the Project needs an auto-add workflow; otherwise add cards by hand.
+- **Feedback toggle:** `features.feedback` in `content/settings.yaml` controls the Feedback section on both `/` and `/supervisor/`. It is `false` by default, because the board covers day-to-day feedback. Set it to `true` to bring the section back; the feedback files and schema are kept. Changes take effect on the next deploy.
+- There is no update cadence or contact line; the board is the channel.
 
 ## Private views
 

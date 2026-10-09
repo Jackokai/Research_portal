@@ -17,7 +17,7 @@ Phases are ordered by dependency, not dates (the README gives none). Each phase 
 Inserted before Phase 2 so private content is never rendered on an open URL. Spec: `2026-10-09-private-views/`.
 - [x] Design tokens (light + dark) and a login page
 - [x] Build-time password protection of `/` and `/supervisor/` (one password each); `/public/` stays open
-- [x] CI leak check; deploy fails closed without secrets (live deploy with real secrets pending)
+- [x] CI leak check; deploy fails closed without secrets (verified live: runs #4 and #5 failed before upload, #6 succeeded)
 - [x] README documents setup and limits (public repo means raw `content/` is public)
 
 ## Phase 2: Researcher workspace
@@ -26,9 +26,9 @@ Depends on Phase 1b. Applies the design tokens (Apple-style look).
 - [x] Feedback log and requirements with status (live deploy and user review pending; spec `2026-10-09-researcher-workspace/`)
 
 ## Phase 3: Supervisor view
-- [ ] Orientation page: current goals and recent archive items (update cadence and contact were dropped on 2026-10-09; the Kanban is the channel. Original text: commit `e3d8b49`)
-- [ ] Kanban board integration (view, add cards, comment): link out to the GitHub Project plus an "Add a card" link; no embed or sync
-- [ ] Feedback items visible with open/addressed status, behind a feature toggle that is off by default (the Kanban covers day-to-day feedback)
+- [x] Orientation page: current goals and recent archive items (update cadence and contact were dropped on 2026-10-09; the Kanban is the channel. Original text: commit `e3d8b49`)
+- [x] Kanban board integration (view, add cards, comment): link out to the GitHub Project plus an "Add a card" link; no embed or sync
+- [x] Feedback items visible with open/addressed status, behind a feature toggle that is off by default (the Kanban covers day-to-day feedback)
 
 ## Phase 4: External view
 - [ ] Plain-language summary page (no jargon); the original README's external-audience guidance is in commit `e3d8b49`
