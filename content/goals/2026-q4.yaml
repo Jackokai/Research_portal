@@ -14,5 +14,5 @@ objectives:
   - title: "SAMPLE: Prove the approach on a small case"
     summaryPlain: "SAMPLE: Plain-language version of this objective for outside readers."
     keyResults:
-      - { title: "Pilot experiments run", unit: experiments, start: 1, target: 5, current: 0 }
+      - { title: "Pilot experiments run", unit: experiments, start: 0, target: 5, current: 2 }
       - { title: "Draft write-up shared", unit: milestone, start: 0, target: 1, current: 0 }
