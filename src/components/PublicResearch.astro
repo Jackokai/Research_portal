@@ -1,0 +1,27 @@
+---
+// Only title, status, date, summaryPlain and outputs are shown. Not `summary`, the body or `link`.
+import type { CollectionEntry } from 'astro:content';
+import Outputs from './Outputs.astro';
+import Section from './Section.astro';
+
+interface Props {
+  ongoing: CollectionEntry<'archive'>[]; // already filtered with published()
+  completed: CollectionEntry<'archive'>[];
+}
+const { ongoing, completed } = Astro.props;
+const entries = [...ongoing, ...completed];
+---
+{entries.length > 0 && (
+  <Section id="research" title="Research">
+    {entries.map((e) => (
+      <article class="card">
+        <h3 class="card-title">{e.data.title}</h3>
+        <p class="muted small card-date">
+          {e.data.status === 'completed' ? `Completed ${e.data.completedOn}` : 'Ongoing'}
+        </p>
+        <p class="entry-text">{e.data.summaryPlain}</p>
+        <Outputs outputs={e.data.outputs ?? []} />
+      </article>
+    ))}
+  </Section>
+)}
