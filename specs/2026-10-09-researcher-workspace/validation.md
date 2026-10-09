@@ -13,6 +13,7 @@ Mergeable when every item passes. Put command output or run links in the PR desc
 - [ ] Goals: current quarter first, then newest to oldest.
 - [ ] Archive: ongoing before completed; completed by `completedOn` descending.
 - [ ] Feedback and requirements: open before closed; newest first within each.
+- [ ] `EditLink` renders nothing when `filePath` is undefined.
 - [ ] `editUrl`: builds `https://github.com/Jackokai/Research_portal/edit/<branch>/content/...`, keeps slashes, encodes spaces and special characters.
 - [ ] Percent formatting: 1/3 gives 33%, 0.5 gives 50%, 1 gives 100%.
 - [ ] Key result text: `current / target unit`.

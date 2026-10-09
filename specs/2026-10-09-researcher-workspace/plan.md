@@ -14,7 +14,7 @@ Phase 1b is merged and deployed with its secrets set, so `src/styles/tokens.css`
 ## 2. Small components
 1. `src/components/Badge.astro` for audience, status and SAMPLE labels (text-based).
 2. `src/components/ProgressBar.astro`: accessible bar (text value plus `role="progressbar"` or `<progress>`), fed by `okr.ts` values.
-3. `src/components/EditLink.astro`: "Edit" link built with `editUrl`, `rel="noopener"`, opens in a new tab.
+3. `src/components/EditLink.astro`: "Edit" link built with `editUrl` (renders nothing if `filePath` is missing), `rel="noopener"`, opens in a new tab.
 4. `src/components/Section.astro`: heading with anchor id and empty-state slot.
 
 ## 3. Section components
