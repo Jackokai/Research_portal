@@ -25,6 +25,8 @@ Rules the build enforces (errors name the file and field):
 - Goals are OKRs: 1-5 objectives per quarter, 2-5 key results each, with numeric `start`, `target` and `current`. A milestone is `start: 0, target: 1`. Status is never stored; progress is computed from the numbers. Exactly one quarter has `current: true`, and the file name matches the quarter (`2026-Q4` is `2026-q4.yaml`).
 - Unknown fields are rejected, so typos fail the build.
 
+The researcher workspace (`/`) shows all of this on one page, and every entry has an **Edit** link that opens its source file in GitHub's web editor. Interface colours come only from `src/styles/tokens.css`; `npm run check` fails on hard-coded colours.
+
 Entries marked `sample: true` (and "SAMPLE" in their text) are placeholders from the original template. Replace or delete them.
 
 ## Private views
@@ -53,7 +55,7 @@ Requires Node 22 (see `.nvmrc`).
 ```bash
 npm ci            # install
 npm run dev       # local dev server
-npm run check     # typecheck, content schemas, cross-file rules, colour contrast
+npm run check     # typecheck, content schemas, cross-file rules, colour contrast, hard-coded colours
 npm test          # unit tests
 npm run build     # plain build to dist/ (dev, PRs)
 RESEARCHER_PASSWORD=... SUPERVISOR_PASSWORD=... npm run build:protected   # build + encrypt + verify

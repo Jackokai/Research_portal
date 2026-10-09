@@ -6,7 +6,7 @@ Mergeable when every item passes. Put command output or run links in the PR desc
 - [x] `npm ci` succeeds from a clean checkout. _(local install; CI will re-run it)_
 - [x] `npm run check` exits 0 on the sample content.
 - [x] `npm run build` exits 0; the three stub pages still build under `/Research_portal/`.
-- [ ] CI is green on the final commit.
+- [x] CI is green on the final commit. _(PR #3)_
 
 ## Schema rejection (each tried once with a deliberately bad file, then reverted)
 Each must fail `check` or `build`, with a message naming the file and field.
@@ -45,7 +45,7 @@ Each must fail `check` or `build`, with a message naming the file and field.
 ## Repository hygiene
 - [x] No `node_modules/`, `dist/` or `.astro/` committed.
 - [x] `specs/roadmap.md` Phase 1 reflects reality; deferred items are noted.
-- [ ] Live site still deploys: manual deploy run after merge, three pages load.
+- [x] Live site still deploys: manual deploy run after merge, three pages load. _(confirmed by the user 2026-10-09; later deploy runs #3 and #6 succeeded)_
 
 ## Not required for merge
 Rendering content, link checking, styling, real research content.

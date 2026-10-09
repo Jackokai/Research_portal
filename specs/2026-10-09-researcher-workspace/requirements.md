@@ -54,7 +54,7 @@ Render all five content collections on `/` so the researcher can see the whole w
 - Dates are validated strings (YYYY-MM-DD) and sort correctly as strings.
 - Astro 7 exposes `render()` from `astro:content` for Markdown bodies (confirmed in the installed type definitions).
 - Production `/` is ciphertext, so rendered-output checks run against the **plain build** (`npm run build`), not `build:protected`.
-- The default branch is currently still `claude/busy-pascal-pkrmgy`; a rename to `main` is pending. Edit links must use whichever name is current, so the branch is one constant. GitHub is expected to redirect old branch URLs after a rename, but that is unverified; check the links after the rename.
+- The default branch is `main` (renamed 2026-10-09). Edit links use it through one constant (`EDIT_BRANCH` in `src/lib/repo.ts`) so a future rename is a one-line change.
 - The encrypted page is decrypted in the browser, which replaces the document. In-page table-of-contents anchors and `<details>` must be checked in that decrypted state, not only in the plain build.
 - No browser test tooling exists in the repo. Ordering logic should be pure functions with unit tests; layout is checked by build output and a one-off visual check.
 
