@@ -7,6 +7,7 @@
 - **Private views (2026-10-09):** `/` (researcher) and `/supervisor/` are password-protected by build-time client-side encryption (one password per view, GitHub secrets); `/public/` stays open. Host stays GitHub Pages with a public repo. See `2026-10-09-private-views/`.
 - **Known limit:** the raw files in `content/` remain public on GitHub. Do not commit real private material until a stronger option is adopted.
 - **Look:** minimalistic, Apple-style: system font stack, whitespace, light + automatic dark mode. No Apple fonts or branding.
+- **Supervisor view (2026-10-09):** the Kanban is linked, not embedded or synced; supervisors add cards through an issue template. Feedback sits behind a feature toggle, off by default. No update cadence or contact line. See `2026-10-09-supervisor-view/`.
 - **Researcher:** single researcher.
 - **Kanban/collaboration:** GitHub (Projects + Issues). Supervisors create a GitHub account if they don't have one.
 - **External audience:** read-only static page, no account needed. Feedback from outsiders is out of scope for now (would need an account for Issues, or a separate mailto/form).

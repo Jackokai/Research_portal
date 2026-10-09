@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { EDIT_BRANCH, REPO_URL, editUrl } from './repo.ts';
+import { EDIT_BRANCH, REPO_URL, editUrl, newCardUrl } from './repo.ts';
 
 test('builds the edit URL for a content file', () => {
   assert.equal(editUrl('content/feedback/sample-open.yaml'), `${REPO_URL}/edit/${EDIT_BRANCH}/content/feedback/sample-open.yaml`);
@@ -24,4 +24,8 @@ test('rejects traversal and empty paths', () => {
 
 test('the branch is main', () => {
   assert.equal(EDIT_BRANCH, 'main');
+});
+
+test('newCardUrl opens the card template on the repo issue form', () => {
+  assert.equal(newCardUrl(), `${REPO_URL}/issues/new?template=card.yml`);
 });

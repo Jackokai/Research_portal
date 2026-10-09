@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { settingsSchema } from './lib/settings';
 
 const base = './content';
 
@@ -163,4 +164,11 @@ const requirements = defineCollection({
   }),
 });
 
-export const collections = { vision, goals, archive, feedback, requirements };
+// ---- settings (site configuration, exempt from the `audience` rule) ----
+
+const settings = defineCollection({
+  loader: glob({ pattern: 'settings.yaml', base }),
+  schema: settingsSchema,
+});
+
+export const collections = { vision, goals, archive, feedback, requirements, settings };

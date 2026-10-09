@@ -9,15 +9,16 @@ import ProgressBar from './ProgressBar.astro';
 
 interface Props {
   entry: CollectionEntry<'goals'>;
+  editable?: boolean;
 }
-const { entry } = Astro.props;
+const { entry, editable = true } = Astro.props;
 const { quarter, current, endDate, objectives, audience, sample } = entry.data;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 ---
 <article class="quarter">
   <div class="quarter-head">
     <h3>{quarter}{current ? ' · current' : ''} <span class="muted small">ends {endDate}</span></h3>
-    <EntryMeta audience={audience} sample={sample} filePath={entry.filePath} />
+    <EntryMeta audience={audience} sample={sample} filePath={entry.filePath} editable={editable} />
   </div>
   {objectives.map((o) => {
     const progress = objectiveProgress(o);

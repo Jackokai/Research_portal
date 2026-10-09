@@ -1,6 +1,48 @@
 ---
+import { getCollection, getEntry } from 'astro:content';
+import Archive from '../components/Archive.astro';
+import Feedback from '../components/Feedback.astro';
+import Goals from '../components/Goals.astro';
+import KanbanBlock from '../components/KanbanBlock.astro';
 import Base from '../layouts/Base.astro';
+import { openFirstNewest, splitArchive } from '../lib/order';
+import { currentQuarter, forAudience, recentCompleted } from '../lib/select';
+import { resolveSettings } from '../lib/settings';
+
+// Audience filtering is the real separation between views: nothing without `supervisor` gets past here.
+const settings = resolveSettings((await getEntry('settings', 'settings'))?.data);
+const [goals, archive, feedback] = await Promise.all([
+  getCollection('goals').then((e) => forAudience(e, 'supervisor')),
+  getCollection('archive').then((e) => forAudience(e, 'supervisor')),
+  getCollection('feedback').then((e) => forAudience(e, 'supervisor')),
+]);
+const quarter = currentQuarter(goals);
+const { ongoing } = splitArchive(archive);
+const completed = recentCompleted(archive, 3);
+const showFeedback = settings.features.feedback;
+
+const sections = [
+  ['board', 'Board'],
+  ['goals', 'Goals'],
+  ['archive', 'Recent research'],
+  ...(showFeedback ? [['feedback', 'Feedback']] : []),
+];
 ---
-<Base title="Supervisor overview" audience="Supervisors">
-  <p>Current goals, recent research and the Kanban board.</p>
+<Base title="Supervisor overview" audience="Supervisors" stub={false}>
+  <div slot="head">
+    <ol class="steps">
+      <li>Start with the current goals.</li>
+      <li>Use the Kanban board for day-to-day interaction: add cards, leave comments.</li>
+      <li>Review the recent research.</li>
+    </ol>
+    <nav aria-label="Sections">
+      <ul class="toc">
+        {sections.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+  <KanbanBlock boardUrl={settings.board.url} />
+  <Goals quarters={quarter ? [quarter] : []} editable={false} />
+  <Archive title="Recent research" ongoing={ongoing} completed={completed} editable={false} collapseCompleted={false} />
+  {showFeedback && <Feedback entries={openFirstNewest(feedback, 'open')} editable={false} />}
 </Base>
