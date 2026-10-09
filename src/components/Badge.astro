@@ -1,0 +1,8 @@
+---
+interface Props {
+  label: string;
+  kind?: 'audience' | 'status' | 'sample';
+}
+const { label, kind = 'audience' } = Astro.props;
+---
+<span class={`badge badge-${kind}`}>{label}</span>

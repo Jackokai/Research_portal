@@ -22,8 +22,8 @@ Inserted before Phase 2 so private content is never rendered on an open URL. Spe
 
 ## Phase 2: Researcher workspace
 Depends on Phase 1b. Applies the design tokens (Apple-style look).
-- [ ] Vision, quarterly goals (current + past), archive (ongoing / completed)
-- [ ] Feedback log and requirements with status
+- [x] Vision, quarterly goals (current + past), archive (ongoing / completed)
+- [x] Feedback log and requirements with status (live deploy and user review pending; spec `2026-10-09-researcher-workspace/`)
 
 ## Phase 3: Supervisor view
 - [ ] Orientation page: current goals, recent archive items, update cadence, contact (cadence and contact have no schema yet; text was in the original README, commit `e3d8b49`)

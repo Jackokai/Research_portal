@@ -1,0 +1,19 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import EntryMeta from './EntryMeta.astro';
+import Section from './Section.astro';
+
+interface Props {
+  entries: CollectionEntry<'vision'>[];
+}
+const { entries } = Astro.props;
+const rendered = await Promise.all(entries.map(async (e) => ({ entry: e, Content: (await render(e)).Content })));
+---
+<Section id="vision" title="Vision" empty={entries.length === 0}>
+  {rendered.map(({ entry, Content }) => (
+    <article class="card">
+      <div class="prose"><Content /></div>
+      <EntryMeta audience={entry.data.audience} sample={entry.data.sample} filePath={entry.filePath} />
+    </article>
+  ))}
+</Section>

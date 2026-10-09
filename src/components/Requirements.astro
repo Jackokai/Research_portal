@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import EntryMeta from './EntryMeta.astro';
+import Section from './Section.astro';
+
+interface Props {
+  entries: CollectionEntry<'requirements'>[]; // already ordered: open first, newest first
+}
+const { entries } = Astro.props;
+---
+<Section id="requirements" title="Requirements" empty={entries.length === 0}>
+  {entries.map((e) => (
+    <article class="card">
+      <div class="card-head">
+        <p class="muted small card-date">{e.data.date}</p>
+        <EntryMeta audience={e.data.audience} sample={e.data.sample} status={e.data.status} filePath={e.filePath} />
+      </div>
+      <p class="entry-text entry-text-first">{e.data.requirement}</p>
+    </article>
+  ))}
+</Section>

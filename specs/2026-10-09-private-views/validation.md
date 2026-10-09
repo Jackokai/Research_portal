@@ -6,7 +6,7 @@ Mergeable when every item passes. Put command output or run links in the PR desc
 - [x] `npm ci` succeeds from a clean checkout. _(local install)_
 - [x] `npm run check`, `npm test` and `npm run build` pass.
 - [x] `npm run build:protected` passes with two valid throwaway passwords.
-- [ ] CI is green on the final commit, including the protected build and leak check.
+- [x] CI is green on the final commit, including the protected build and leak check. _(PR #4)_
 
 ## Password policy (each tried once, then reverted)
 - [x] Missing `RESEARCHER_PASSWORD`: `build:protected` exits non-zero, nothing encrypted or published.
@@ -34,9 +34,9 @@ Mergeable when every item passes. Put command output or run links in the PR desc
 - [x] No Apple fonts, icons or logos are included; the font stack is system fonts only.
 
 ## Live (after merge and setting the two secrets)
-- [ ] Deploy with secrets succeeds; `/` and `/supervisor/` show the prompt in a logged-out browser; `/public/` opens freely.
+- [ ] Deploy with secrets succeeds _(done: runs #3 and #6)_; `/` and `/supervisor/` show the prompt in a logged-out browser and `/public/` opens freely _(not yet confirmed by the user)_.
 - [ ] "View source" on the live `/` shows ciphertext, no stub text.
-- [ ] Deploy with a secret removed fails before upload.
+- [x] Deploy with a secret removed fails before upload. _(run #4: `RESEARCHER_PASSWORD is not set`, upload and deploy jobs skipped; run #5: identical passwords rejected with "must be different"; run #6 succeeded after restoring. GitHub masked the values in the logs.)_
 
 ## Documentation
 - [x] README states the Limits in plain language (public repo, public ciphertext, shared passwords, no side channels).

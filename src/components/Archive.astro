@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArchiveEntry from './ArchiveEntry.astro';
+import Section from './Section.astro';
+
+interface Props {
+  ongoing: CollectionEntry<'archive'>[];
+  completed: CollectionEntry<'archive'>[]; // newest completedOn first
+}
+const { ongoing, completed } = Astro.props;
+---
+<Section id="archive" title="Research archive" empty={ongoing.length + completed.length === 0}>
+  {ongoing.map((e) => <ArchiveEntry entry={e} />)}
+  {completed.length > 0 && (
+    <details class="group">
+      <summary>Completed ({completed.length})</summary>
+      {completed.map((e) => <ArchiveEntry entry={e} />)}
+    </details>
+  )}
+</Section>

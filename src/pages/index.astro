@@ -1,6 +1,38 @@
 ---
+import { getCollection } from 'astro:content';
+import Archive from '../components/Archive.astro';
+import Feedback from '../components/Feedback.astro';
+import Goals from '../components/Goals.astro';
+import Requirements from '../components/Requirements.astro';
+import Vision from '../components/Vision.astro';
 import Base from '../layouts/Base.astro';
+import { openFirstNewest, orderGoals, splitArchive } from '../lib/order';
+
+const [vision, goals, archive, feedback, requirements] = await Promise.all([
+  getCollection('vision'),
+  getCollection('goals'),
+  getCollection('archive'),
+  getCollection('feedback'),
+  getCollection('requirements'),
+]);
+const { ongoing, completed } = splitArchive(archive);
+const sections = [
+  ['vision', 'Vision'],
+  ['goals', 'Goals'],
+  ['archive', 'Archive'],
+  ['feedback', 'Feedback'],
+  ['requirements', 'Requirements'],
+];
 ---
-<Base title="Researcher workspace" audience="Researcher">
-  <p>Goals, Kanban, archive and feedback for day-to-day work.</p>
+<Base title="Researcher workspace" audience="Researcher" stub={false}>
+  <nav slot="head" aria-label="Sections">
+    <ul class="toc">
+      {sections.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}
+    </ul>
+  </nav>
+  <Vision entries={vision} />
+  <Goals quarters={orderGoals(goals)} />
+  <Archive ongoing={ongoing} completed={completed} />
+  <Feedback entries={openFirstNewest(feedback, 'open')} />
+  <Requirements entries={openFirstNewest(requirements, 'open')} />
 </Base>

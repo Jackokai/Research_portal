@@ -1,0 +1,46 @@
+---
+// One quarter's OKRs. Progress and labels come from src/lib/okr.ts; nothing is recomputed here.
+import type { CollectionEntry } from 'astro:content';
+import { keyResultText, percent } from '../lib/format';
+import { keyResultProgress, objectiveLabel, objectiveProgress } from '../lib/okr';
+import Badge from './Badge.astro';
+import EntryMeta from './EntryMeta.astro';
+import ProgressBar from './ProgressBar.astro';
+
+interface Props {
+  entry: CollectionEntry<'goals'>;
+}
+const { entry } = Astro.props;
+const { quarter, current, endDate, objectives, audience, sample } = entry.data;
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+---
+<article class="quarter">
+  <div class="quarter-head">
+    <h3>{quarter}{current ? ' · current' : ''} <span class="muted small">ends {endDate}</span></h3>
+    <EntryMeta audience={audience} sample={sample} filePath={entry.filePath} />
+  </div>
+  {objectives.map((o) => {
+    const progress = objectiveProgress(o);
+    return (
+      <div class="objective">
+        <div class="objective-head">
+          <h4 class="objective-title">{o.title}</h4>
+          <Badge kind="status" label={cap(objectiveLabel(o))} />
+        </div>
+        {o.description && <p class="muted small objective-desc">{o.description}</p>}
+        <ProgressBar value={progress} label={`${o.title}: ${percent(progress)}`} />
+        <ul class="kr-list">
+          {o.keyResults.map((kr) => (
+            <li class="kr">
+              <div class="kr-head">
+                <span>{kr.title}</span>
+                <span class="kr-value">{keyResultText(kr)}</span>
+              </div>
+              <ProgressBar value={keyResultProgress(kr)} label={`${kr.title}: ${percent(keyResultProgress(kr))}`} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  })}
+</article>
