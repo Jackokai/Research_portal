@@ -33,7 +33,7 @@ Prove the full path from a Markdown/Astro source in the repo to a live public pa
 The roadmap lists "Pages deploy", but "deploy on merge" was not selected as a CI gate. To satisfy both, the deploy workflow exists and is verified, but runs only when triggered manually. Switching to automatic deploy on the default branch is a one-line trigger change and can be decided after first successful deploy.
 
 ## Context and constraints
-- Public repo and public Pages are accepted; no sensitive material in the repo.
+- Repo was made public on 2026-10-09 so free GitHub Pages works. Public repo and public Pages are accepted; no sensitive material in the repo.
 - Single researcher; supervisors use GitHub.
 - Repository currently contains only `README.md` and `specs/`.
 - Pages must be enabled once in repo settings (Source: GitHub Actions). This is a manual step outside the code.
