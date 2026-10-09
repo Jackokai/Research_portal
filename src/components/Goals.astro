@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Quarter from './Quarter.astro';
+import Section from './Section.astro';
+
+interface Props {
+  quarters: CollectionEntry<'goals'>[]; // already ordered: current first, then newest
+}
+const { quarters } = Astro.props;
+const current = quarters.filter((q) => q.data.current);
+const past = quarters.filter((q) => !q.data.current);
+---
+<Section id="goals" title="Quarterly goals" empty={quarters.length === 0}>
+  {current.map((q) => <Quarter entry={q} />)}
+  {past.length > 0 && (
+    <details class="group">
+      <summary>Past quarters ({past.length})</summary>
+      {past.map((q) => <Quarter entry={q} />)}
+    </details>
+  )}
+</Section>
