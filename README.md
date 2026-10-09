@@ -106,3 +106,21 @@ Plain-language summary of the research: what it is about, why it matters, and wh
 ---
 
 *This repository is designed so that the same source of truth can serve the researcher, supervisors, and external audiences through a clean, role-aware interface.*
+
+---
+
+## Developing
+
+Requires Node 22 (see `.nvmrc`).
+
+```bash
+npm ci            # install
+npm run dev       # local dev server
+npm run check     # typecheck
+npm run build     # build to dist/
+npm run preview   # serve the build at /Research_portal/
+```
+
+- **CI** runs `check` and `build` on every pull request.
+- **Deploy** is manual: Actions > "Deploy to GitHub Pages" > Run workflow. One-time setup: repo Settings > Pages > Source: GitHub Actions. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.
+- Live site: https://jackokai.github.io/Research_portal/

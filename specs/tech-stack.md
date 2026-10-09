@@ -3,7 +3,7 @@
 > The README prescribes no technology. Everything below is a **proposal** derived from its requirements, except the decisions recorded here.
 
 ## Decisions made
-- **Privacy:** not required initially. Public repo + public GitHub Pages. No unpublished or sensitive material goes in the repo.
+- **Privacy:** not required initially. Repo is now public (2026-10-09), which makes free GitHub Pages available; Cloudflare/Netlify not needed. No unpublished or sensitive material goes in the repo.
 - **Researcher:** single researcher.
 - **Kanban/collaboration:** GitHub (Projects + Issues). Supervisors create a GitHub account if they don't have one.
 - **External audience:** read-only static page, no account needed. Feedback from outsiders is out of scope for now (would need an account for Issues, or a separate mailto/form).
