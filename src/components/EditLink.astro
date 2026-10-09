@@ -1,0 +1,11 @@
+---
+import { editUrl } from '../lib/repo';
+
+interface Props {
+  filePath?: string;
+}
+const { filePath } = Astro.props;
+// filePath is optional in Astro's types; with no path there is nothing to link to.
+const href = filePath ? editUrl(filePath) : undefined;
+---
+{href && <a class="edit-link" href={href} target="_blank" rel="noopener">Edit</a>}

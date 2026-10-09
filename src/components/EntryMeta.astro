@@ -1,0 +1,20 @@
+---
+// Audience badges, optional status, SAMPLE badge and Edit link for one entry.
+import Badge from './Badge.astro';
+import EditLink from './EditLink.astro';
+
+interface Props {
+  audience: string[];
+  sample?: boolean;
+  status?: string;
+  filePath?: string;
+}
+const { audience, sample, status, filePath } = Astro.props;
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+---
+<div class="meta">
+  {sample && <Badge kind="sample" label="SAMPLE" />}
+  {status && <Badge kind="status" label={cap(status)} />}
+  {audience.map((a) => <Badge label={cap(a)} />)}
+  <EditLink filePath={filePath} />
+</div>
