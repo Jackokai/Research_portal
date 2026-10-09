@@ -12,7 +12,7 @@ Prove the full path from a Markdown/Astro source in the repo to a live public pa
 - Correct `site` and `base` for a GitHub Pages project site (`https://jackokai.github.io/Research_portal/`), so links work under the sub-path.
 - GitHub Actions CI on pull requests: install, typecheck (`astro check`), build.
 - GitHub Actions Pages deploy workflow.
-- Short developer instructions (how to run, build, deploy) in a new `docs`-style section of the README or a `CONTRIBUTING`-free note; README content from the original file stays intact.
+- A short "Developing" section appended to the README (run, build, check, deploy); the original README content stays intact.
 
 ## Out of scope
 - Content schemas, content migration, real page content (Phase 1+).
