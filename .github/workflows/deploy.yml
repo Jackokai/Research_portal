@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       protect:
-        description: 'Password-protect / and /supervisor/ (untick only while testing with sample content)'
+        description: 'Password-protect / and /supervisor/ (tick before real private material is added)'
         type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: read
@@ -30,7 +30,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      # Default (protect ticked) fails closed: a missing, empty or weak password secret stops the deploy before upload.
+      # When protect is ticked this fails closed: a missing, empty or weak password secret stops the deploy before upload.
       # Fail-closed: protection is skipped ONLY when the input is exactly 'false'. A missing input (for example
       # a re-run of an older run) counts as protected, because an empty value is not the string 'false'.
       - if: ${{ format('{0}', inputs.protect) != 'false' }}

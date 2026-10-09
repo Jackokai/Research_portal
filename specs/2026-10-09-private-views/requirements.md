@@ -30,7 +30,7 @@ Put a password in front of the researcher view (`/`) and the supervisor view (`/
 | Supervisor login method | Shared password (the earlier "decide later" is resolved by this approach) |
 
 ## Deploy opt-out (added after first use)
-The manual deploy has a `protect` input, ticked by default. Unticking it runs the plain `npm run build` and publishes `/` and `/supervisor/` unencrypted, with a workflow warning. This exists so the researcher can look at pages while testing with sample content. The default stays fail-closed; the opt-out is a per-run, visible choice, not a secret removal. Turn it off again before real private material is added.
+The manual deploy has a `protect` input. It was ticked by default; on 2026-10-09 the researcher changed the default to **unticked**, so a default run runs the plain `npm run build` and publishes `/` and `/supervisor/` unencrypted, with a workflow warning. This is acceptable only while the site holds sample content. With the box ticked the run is fail-closed. A missing input (for example a re-run of an older run) still counts as protected, because protection is skipped only on an exact `false`. Tick the box before real private material is added.
 
 ## Limits (stated plainly; repeated in the README)
 1. **The repo is public.** Anything committed under `content/` is readable on GitHub regardless of the page passwords. The password protects the rendered pages only. Real researcher or supervisor material must not be committed until content moves to a private source (options recorded in `tech-stack.md`).
