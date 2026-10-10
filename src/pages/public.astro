@@ -1,6 +1,22 @@
 ---
+import { getCollection } from 'astro:content';
+import PublicResearch from '../components/PublicResearch.astro';
+import PublicVision from '../components/PublicVision.astro';
 import Base from '../layouts/Base.astro';
+import { splitArchive } from '../lib/order';
+import { published } from '../lib/publish';
+
+// The review step lives in published(): external audience AND publishable: true, never a sample.
+const [vision, archive] = await Promise.all([
+  getCollection('vision').then(published),
+  getCollection('archive').then(published),
+]);
+const { ongoing, completed } = splitArchive(archive);
+const nothing = vision.length + archive.length === 0;
 ---
-<Base title="Research in plain language" audience="External readers">
-  <p>What the research is about and why it matters, without jargon.</p>
+<Base title="Research in plain language" audience="Everyone" stub={false}>
+  <p slot="head" class="muted">What the research is about, why it matters, and what you can use.</p>
+  {nothing && <p class="card" data-empty="true">Nothing is published yet.</p>}
+  <PublicVision entries={vision} />
+  <PublicResearch ongoing={ongoing} completed={completed} />
 </Base>

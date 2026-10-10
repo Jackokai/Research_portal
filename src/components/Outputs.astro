@@ -1,0 +1,19 @@
+---
+import { OUTPUT_KIND_LABEL, type OutputKind } from '../lib/publish';
+import Badge from './Badge.astro';
+
+interface Props {
+  outputs: { kind: OutputKind; title: string; url: string }[];
+}
+const { outputs } = Astro.props;
+---
+{outputs.length > 0 && (
+  <ul class="outputs">
+    {outputs.map((o) => (
+      <li>
+        <Badge kind="status" label={OUTPUT_KIND_LABEL[o.kind]} />
+        <a href={o.url} target="_blank" rel="noopener noreferrer">{o.title}</a>
+      </li>
+    ))}
+  </ul>
+)}

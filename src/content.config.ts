@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { checkPublishable, outputSchema } from './lib/publish';
 import { settingsSchema } from './lib/settings';
 
 const base = './content';
@@ -50,8 +51,11 @@ function requirePlain(
 const vision = defineCollection({
   loader: glob({ pattern: '*.md', base: `${base}/vision` }),
   schema: z
-    .strictObject({ audience, sample, summaryPlain: plain.optional() })
-    .superRefine((v, ctx) => requirePlain(v.audience, v.summaryPlain, ctx)),
+    .strictObject({ audience, sample, summaryPlain: plain.optional(), publishable: z.boolean().optional() })
+    .superRefine((v, ctx) => {
+      requirePlain(v.audience, v.summaryPlain, ctx);
+      checkPublishable(v, ctx);
+    }),
 });
 
 // ---- goals (OKRs) ----
@@ -125,6 +129,8 @@ const archive = defineCollection({
       summary: z.string().min(1),
       link: z.url().optional(),
       summaryPlain: plain.optional(),
+      publishable: z.boolean().optional(),
+      outputs: z.array(outputSchema).optional(),
     })
     .superRefine((a, ctx) => {
       if (a.status === 'completed' && !a.completedOn) {
@@ -134,6 +140,7 @@ const archive = defineCollection({
         ctx.addIssue({ code: 'custom', path: ['completedOn'], message: 'completedOn must be absent when status is "ongoing"' });
       }
       requirePlain(a.audience, a.summaryPlain, ctx);
+      checkPublishable(a, ctx);
     }),
 });
 

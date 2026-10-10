@@ -1,6 +1,7 @@
 ---
 import { render, type CollectionEntry } from 'astro:content';
 import EntryMeta from './EntryMeta.astro';
+import { publicationState } from '../lib/publish';
 import Section from './Section.astro';
 
 interface Props {
@@ -13,7 +14,7 @@ const rendered = await Promise.all(entries.map(async (e) => ({ entry: e, Content
   {rendered.map(({ entry, Content }) => (
     <article class="card">
       <div class="prose"><Content /></div>
-      <EntryMeta audience={entry.data.audience} sample={entry.data.sample} filePath={entry.filePath} />
+      <EntryMeta audience={entry.data.audience} sample={entry.data.sample} filePath={entry.filePath} publication={publicationState(entry)} />
     </article>
   ))}
 </Section>

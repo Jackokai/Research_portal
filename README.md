@@ -24,11 +24,38 @@ Rules the build enforces (errors name the file and field):
 - If `audience` includes `external`, add `summaryPlain` (plain-language text for outsiders). For goals this goes on each objective.
 - **Dates must be quoted**: `date: "2026-10-01"`. Unquoted YAML dates are rejected, because an impossible one such as `2026-13-40` was observed to pass validation.
 - Goals are OKRs: 1-5 objectives per quarter, 2-5 key results each, with numeric `start`, `target` and `current`. A milestone is `start: 0, target: 1`. Status is never stored; progress is computed from the numbers. Exactly one quarter has `current: true`, and the file name matches the quarter (`2026-Q4` is `2026-q4.yaml`).
+- `publishable` and `outputs` exist on vision and archive entries only (see Publishing to the external page).
 - Unknown fields are rejected, so typos fail the build.
 
 The researcher workspace (`/`) shows all of this on one page, and every entry has an **Edit** link that opens its source file in GitHub's web editor. Interface colours come only from `src/styles/tokens.css`; `npm run check` fails on hard-coded colours.
 
 Entries marked `sample: true` (and "SAMPLE" in their text) are placeholders from the original template. Replace or delete them.
+
+## Publishing to the external page
+
+`/public/` is open to everyone and is the only view meant for people outside the project. A **vision or archive** entry appears there only when all three hold:
+1. `external` is in its `audience`,
+2. `publishable: true` is set (a deliberate second key, so a draft with `external` is never shown),
+3. it is not `sample: true` (samples are never published).
+
+`publishable: true` without `external` fails the build. The researcher workspace marks each such entry **Published** or **Draft**.
+
+To publish: write a `summaryPlain` (20-600 characters), add `external` to the audience, set `publishable: true`, optionally list `outputs`, then deploy.
+
+```yaml
+publishable: true
+summaryPlain: "We measured how fast beaches are disappearing and shared the photos."
+outputs:
+  - { kind: dataset, title: "Beach photos 2020-2025", url: "https://example.com/photos" }
+```
+
+`kind` is one of `demo`, `dataset`, `tool`, `paper`, `other`; the URL must be `https://`. The page shows only the title, status, `summaryPlain` and outputs. It never shows `summary`, the body or `link`, and nothing from goals, feedback or requirements. Goals, feedback and requirements are never published, so `external` has no effect on them.
+
+**Plain-language checklist** (no tool can check this for you): short sentences; explain every technical term or leave it out; say why it matters; say what a reader can use or try.
+
+**What guards the page:** `npm run check:external` runs after the build, in CI and in the deploy. It reads every content file and fails the build if a draft, a sample, an entry's `summary`, body or `link`, or any text from the other views appears on `/public/`, or if a published `summaryPlain` is missing. It catches verbatim copies of roughly 60 characters or more, not paraphrases.
+
+**Limits:** the repository is public, so drafts and every other file in `content/` are readable on GitHub. `publishable` controls what the site shows, not what the repository exposes.
 
 ## Supervisor view and the Kanban board
 
@@ -72,5 +99,5 @@ RESEARCHER_PASSWORD=... SUPERVISOR_PASSWORD=... npm run build:protected   # buil
 npm run preview   # serve the build at /Research_portal/
 ```
 
-- **CI** runs `check`, `test`, `build`, and `build:protected` with throwaway passwords on every pull request.
+- **CI** runs `check`, `test`, `build`, the external-page guard, and `build:protected` with throwaway passwords on every pull request.
 - **Deploy** uses `build:protected` with the two secrets and is manual. The run dialog has a "Password-protect" box, ticked by default; untick it only while testing with sample content, to publish `/` and `/supervisor/` as plain public pages (the run shows a warning): Actions > "Deploy to GitHub Pages" > Run workflow. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.

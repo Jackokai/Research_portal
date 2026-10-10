@@ -8,6 +8,7 @@
 - **Known limit:** the raw files in `content/` remain public on GitHub. Do not commit real private material until a stronger option is adopted.
 - **Look:** minimalistic, Apple-style: system font stack, whitespace, light + automatic dark mode. No Apple fonts or branding.
 - **Supervisor view (2026-10-09):** the Kanban is linked, not embedded or synced; supervisors add cards through an issue template. Feedback sits behind a feature toggle, off by default. No update cadence or contact line. See `2026-10-09-supervisor-view/`.
+- **External view (2026-10-09):** an entry appears on `/public/` only with `external` in its audience and `publishable: true`; samples never appear; outputs are a list on archive entries; a post-build guard checks the page. See `2026-10-09-external-view/`.
 - **Researcher:** single researcher.
 - **Kanban/collaboration:** GitHub (Projects + Issues). Supervisors create a GitHub account if they don't have one.
 - **External audience:** read-only static page, no account needed. Feedback from outsiders is out of scope for now (would need an account for Issues, or a separate mailto/form).
