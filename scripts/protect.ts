@@ -9,6 +9,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PROMPT, findLeaks, isNoindex, isPrompt, sideChannelFiles } from '../src/lib/leak.ts';
 import { validatePasswords } from '../src/lib/protect-policy.ts';
+import { LEGACY_PUBLIC, ROUTES, distFile } from '../src/lib/routes.ts';
 
 const root = new URL('../', import.meta.url).pathname;
 const dist = join(root, 'dist');
@@ -29,17 +30,20 @@ const { errors, passwords } = validatePasswords(process.env);
 if (!passwords) fail(errors);
 
 try {
-  statSync(join(dist, 'index.html'));
+  for (const route of [ROUTES.researcher, ROUTES.supervisor, ROUTES.public, LEGACY_PUBLIC]) statSync(join(dist, distFile(route)));
 } catch {
-  fail(['dist/index.html not found; run `npm run build` first']);
+  fail(['a page is missing from dist/; run `npm run build` first']);
 }
 
 const targets = [
-  { file: join(dist, 'index.html'), password: passwords.researcher },
-  { file: join(dist, 'supervisor', 'index.html'), password: passwords.supervisor },
+  { file: join(dist, distFile(ROUTES.researcher)), password: passwords.researcher },
+  { file: join(dist, distFile(ROUTES.supervisor)), password: passwords.supervisor },
 ];
-const publicFile = join(dist, 'public', 'index.html');
-const publicHash = createHash('sha256').update(readFileSync(publicFile)).digest('hex');
+// The open pages must come out of this step exactly as they went in.
+const openFiles = [join(dist, distFile(ROUTES.public)), join(dist, distFile(LEGACY_PUBLIC))];
+const hashOf = (f: string) => createHash('sha256').update(readFileSync(f)).digest('hex');
+const openHashes = openFiles.map(hashOf);
+if (targets.some((t) => openFiles.includes(t.file))) fail(['an open page is listed as a protected target; check src/lib/routes.ts']);
 
 // Template = our prompt page with the design tokens inlined.
 const work = mkdtempSync(join(tmpdir(), 'protect-'));
@@ -86,13 +90,13 @@ try {
   rmSync(work, { recursive: true, force: true });
 }
 
-if (createHash('sha256').update(readFileSync(publicFile)).digest('hex') !== publicHash) {
-  problems.push('dist/public/index.html was modified; it must stay open and unchanged');
-}
+openFiles.forEach((f, i) => {
+  if (hashOf(f) !== openHashes[i]) problems.push(`${f.replace(root, '')} was modified; it must stay open and unchanged`);
+});
 const side = sideChannelFiles(walk(dist).map((p) => p.replace(dist + '/', '')));
 if (side.length) problems.push(`possible side channels in dist/: ${side.join(', ')}`);
 
 if (problems.length) fail(problems);
 // Write only after every check passed, so a failure never leaves a half-protected dist/.
 for (const r of results) writeFileSync(r.file, r.encrypted);
-console.log('protect ok: / and /supervisor/ are encrypted; /public/ is open and unchanged');
+console.log('protect ok: /researcher/ and /supervisor/ are encrypted; / and /public/ are open and unchanged');
