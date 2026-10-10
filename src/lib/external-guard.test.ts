@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STEP, WINDOW, decodeEntities, externalRules, findProblems, pageText, splitFrontMatter, type GuardEntry } from './external-guard.ts';
+import { STEP, WINDOW, decodeEntities, markdownToText, normalise, externalRules, findProblems, pageText, splitFrontMatter, type GuardEntry } from './external-guard.ts';
 
 const published: GuardEntry = {
   collection: 'archive',
@@ -134,4 +134,21 @@ test('documented limit: a short run from the middle of a long line is not caught
   const r = externalRules([long]);
   const s = long.data.summary as string;
   assert.deepEqual(findProblems(`<p>${s.slice(60, 60 + 25)}</p>`, r), []);
+});
+
+test('inline formatting and smart quotes do not hide a leak or fake a missing text', () => {
+  const e: GuardEntry = { collection: 'archive', id: 'm', data: { audience: ['researcher'], title: 'Notes' }, body: "It's a **really** clear point about [methods](https://example.com/m) overall." };
+  const rendered = '<p>It\u2019s a <strong>really</strong> clear point about <a href="https://example.com/m">methods</a> overall.</p>';
+  assert.ok(findProblems(rendered, externalRules([e])).length > 0, 'leak found through inline tags, a link and a curly quote');
+  const pub: GuardEntry = { collection: 'vision', id: 'v', data: { audience: ['external'], publishable: true, summaryPlain: "We don't use jargon here, honestly." } };
+  assert.deepEqual(findProblems('<p>We don\u2019t use jargon here, honestly.</p>', externalRules([pub])), []);
+});
+
+test('markdownToText strips syntax but keeps the words', () => {
+  assert.equal(markdownToText('# Title\n\n- **bold** and _em_ and `code`\n> quoted\n1. [link text](https://x.dev) ![alt](i.png)'), 'Title\nbold and em and code\nquoted\nlink text alt');
+  assert.equal(markdownToText('snake_case_word stays'), 'snake_case_word stays');
+});
+
+test('normalise maps typographic characters to plain ones', () => {
+  assert.equal(normalise('\u2018a\u2019 \u201Cb\u201D c\u2014d e\u2013f\u2026'), '\'a\' "b" c-d e-f...');
 });
