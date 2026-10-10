@@ -1,20 +1,17 @@
 ---
 import '../styles/tokens.css';
 import '../styles/global.css';
+import LensSwitcher from '../components/LensSwitcher.astro';
+import { PRIVATE_LENSES, type Lens } from '../lib/routes';
 
 interface Props {
   title: string;
   audience: string;
+  lens: Lens;
   stub?: boolean;
 }
-const { title, audience, stub = true } = Astro.props;
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const nav = [
-  { href: `${base}/`, label: 'Researcher' },
-  { href: `${base}/supervisor/`, label: 'Supervisor' },
-  { href: `${base}/public/`, label: 'Public' },
-];
-const here = Astro.url.pathname;
+const { title, audience, lens, stub = false } = Astro.props;
+const isPrivate = PRIVATE_LENSES.includes(lens);
 ---
 <!doctype html>
 <html lang="en">
@@ -22,14 +19,13 @@ const here = Astro.url.pathname;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    {isPrivate && <meta name="robots" content="noindex" />}
     <title>{title} · Research Portal</title>
   </head>
   <body>
     <header class="site-header">
       <span class="brand">Research Portal</span>
-      <nav class="site-nav" aria-label="Views">
-        {nav.map((n) => <a href={n.href} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>)}
-      </nav>
+      {isPrivate && <LensSwitcher current={lens} />}
     </header>
     <main>
       <div class="page-head">

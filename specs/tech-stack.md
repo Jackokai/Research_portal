@@ -4,11 +4,12 @@
 
 ## Decisions made
 - **Privacy:** not required initially. Repo is now public (2026-10-09), which makes free GitHub Pages available; Cloudflare/Netlify not needed. No unpublished or sensitive material goes in the repo.
-- **Private views (2026-10-09):** `/` (researcher) and `/supervisor/` are password-protected by build-time client-side encryption (one password per view, GitHub secrets); `/public/` stays open. Host stays GitHub Pages with a public repo. See `2026-10-09-private-views/`.
+- **Private views (2026-10-09; researcher view moved to `/researcher/` on 2026-10-10):** `/researcher/` and `/supervisor/` are password-protected by build-time client-side encryption (one password per view, GitHub secrets); `/public/` stays open. Host stays GitHub Pages with a public repo. See `2026-10-09-private-views/`.
 - **Known limit:** the raw files in `content/` remain public on GitHub. Do not commit real private material until a stronger option is adopted.
 - **Look:** minimalistic, Apple-style: system font stack, whitespace, light + automatic dark mode. No Apple fonts or branding.
 - **Supervisor view (2026-10-09):** the Kanban is linked, not embedded or synced; supervisors add cards through an issue template. Feedback sits behind a feature toggle, off by default. No update cadence or contact line. See `2026-10-09-supervisor-view/`.
-- **External view (2026-10-09):** an entry appears on `/public/` only with `external` in its audience and `publishable: true`; samples never appear; outputs are a list on archive entries; a post-build guard checks the page. See `2026-10-09-external-view/`.
+- **External view (2026-10-09; now served at the site root `/`):** an entry appears on the public page only with `external` in its audience and `publishable: true`; samples never appear; outputs are a list on archive entries; a post-build guard checks the page. See `2026-10-09-external-view/`.
+- **Role-aware UI (2026-10-10):** the root `/` is the public view, the researcher workspace moves to `/researcher/`, `/supervisor/` is unchanged and `/public/` redirects to `/`. The public page shows no private links; private views have a lens switcher. All routes live in `src/lib/routes.ts`. An automated view-matrix check proves each entry shows only in the views it may. See `2026-10-10-role-aware-ui/`.
 - **Researcher:** single researcher.
 - **Kanban/collaboration:** GitHub (Projects + Issues). Supervisors create a GitHub account if they don't have one.
 - **External audience:** read-only static page, no account needed. Feedback from outsiders is out of scope for now (would need an account for Issues, or a separate mailto/form).

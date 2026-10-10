@@ -8,6 +8,19 @@ Live site: https://jackokai.github.io/Research_portal/
 - **Specs** (mission, tech stack, roadmap, per-feature plans) live in [`specs/`](specs/).
 - The original README template (vision, quarterly goals, Kanban, archive, supervisor and external sections, feedback) is preserved in git history at commit `e3d8b49`.
 
+## The three views
+
+| URL | View | For | Protection |
+|-----|------|-----|------------|
+| `/` | Public: plain-language summary and published research | everyone | open |
+| `/researcher/` | Researcher workspace: all content, Edit links | the researcher | password, if the deploy box is ticked |
+| `/supervisor/` | Supervisor overview: goals, recent research, Kanban link | supervisors | password, if the deploy box is ticked |
+| `/public/` | Forwards to `/` (the old address of the public view) | old links | open |
+
+The same content files feed all three; each view shows only what its audience may see. The public page has **no links to the private views**. The researcher and supervisor pages have a switcher between all three lenses. **Bookmark `/researcher/` and `/supervisor/`**: the bare site address now shows the public page. Routes are defined once in `src/lib/routes.ts`.
+
+`npm run check:views` runs after the build, in CI and in the deploy. It reads every content file and checks the built pages: each entry shows only in the views it may, exactly once, with the same progress values as the content gives, and no prose is duplicated across two non-sample content files. It must run on the plain build, so `build:protected` runs it before encrypting.
+
 ## Editing content
 
 | Folder | What | Format |
@@ -27,13 +40,13 @@ Rules the build enforces (errors name the file and field):
 - `publishable` and `outputs` exist on vision and archive entries only (see Publishing to the external page).
 - Unknown fields are rejected, so typos fail the build.
 
-The researcher workspace (`/`) shows all of this on one page, and every entry has an **Edit** link that opens its source file in GitHub's web editor. Interface colours come only from `src/styles/tokens.css`; `npm run check` fails on hard-coded colours.
+The researcher workspace (`/researcher/`) shows all of this on one page, and every entry has an **Edit** link that opens its source file in GitHub's web editor. Interface colours come only from `src/styles/tokens.css`; `npm run check` fails on hard-coded colours.
 
 Entries marked `sample: true` (and "SAMPLE" in their text) are placeholders from the original template. Replace or delete them.
 
 ## Publishing to the external page
 
-`/public/` is open to everyone and is the only view meant for people outside the project. A **vision or archive** entry appears there only when all three hold:
+The site root (`/`) is open to everyone and is the only view meant for people outside the project. A **vision or archive** entry appears there only when all three hold:
 1. `external` is in its `audience`,
 2. `publishable: true` is set (a deliberate second key, so a draft with `external` is never shown),
 3. it is not `sample: true` (samples are never published).
@@ -53,7 +66,7 @@ outputs:
 
 **Plain-language checklist** (no tool can check this for you): short sentences; explain every technical term or leave it out; say why it matters; say what a reader can use or try.
 
-**What guards the page:** `npm run check:external` runs after the build, in CI and in the deploy. It reads every content file and fails the build if a draft, a sample, an entry's `summary`, body or `link`, or any text from the other views appears on `/public/`, or if a published `summaryPlain` is missing. It catches verbatim copies of roughly 60 characters or more, not paraphrases.
+**What guards the page:** `npm run check:external` runs after the build, in CI and in the deploy (it is also the public case of `check:views`). It reads every content file and fails the build if a draft, a sample, an entry's `summary`, body or `link`, or any text from the other views appears on `/public/`, or if a published `summaryPlain` is missing. It catches verbatim copies of roughly 60 characters or more, not paraphrases.
 
 **Limits:** the repository is public, so drafts and every other file in `content/` are readable on GitHub. `publishable` controls what the site shows, not what the repository exposes.
 
@@ -63,15 +76,15 @@ outputs:
 
 - **Board link:** create a GitHub Project board, then paste its URL into `content/settings.yaml` under `board.url`. Until you do, the page shows "Board link not set".
 - **Add a card:** the page links to a new-issue form (`.github/ISSUE_TEMPLATE/card.yml`). Issues in this public repository are **public**, and so are comments on them. For a new issue to land on the board automatically, the Project needs an auto-add workflow; otherwise add cards by hand.
-- **Feedback toggle:** `features.feedback` in `content/settings.yaml` controls the Feedback section on both `/` and `/supervisor/`. It is `false` by default, because the board covers day-to-day feedback. Set it to `true` to bring the section back; the feedback files and schema are kept. Changes take effect on the next deploy.
+- **Feedback toggle:** `features.feedback` in `content/settings.yaml` controls the Feedback section on both `/researcher/` and `/supervisor/`. It is `false` by default, because the board covers day-to-day feedback. Set it to `true` to bring the section back; the feedback files and schema are kept. Changes take effect on the next deploy.
 - There is no update cadence or contact line; the board is the channel.
 
 ## Private views
 
-`/` (researcher) and `/supervisor/` are password-protected; `/public/` is open. Each protected page is encrypted at build time and decrypted in the browser. Passwords are GitHub Actions secrets, never committed.
+`/researcher/` and `/supervisor/` are password-protected; the site root `/` (the public view) is open. Each protected page is encrypted at build time and decrypted in the browser. Passwords are GitHub Actions secrets, never committed.
 
 **Setup (once):** repo Settings > Secrets and variables > Actions > New repository secret, add both:
-- `RESEARCHER_PASSWORD`: for `/`
+- `RESEARCHER_PASSWORD`: for `/researcher/`
 - `SUPERVISOR_PASSWORD`: for `/supervisor/`
 
 Each must be at least 16 characters and they must differ. A random passphrase of four or more words is a good choice. The deploy refuses to publish if either is missing, empty or too short.
@@ -99,5 +112,5 @@ RESEARCHER_PASSWORD=... SUPERVISOR_PASSWORD=... npm run build:protected   # buil
 npm run preview   # serve the build at /Research_portal/
 ```
 
-- **CI** runs `check`, `test`, `build`, the external-page guard, and `build:protected` with throwaway passwords on every pull request.
-- **Deploy** uses `build:protected` with the two secrets and is manual. The run dialog has a "Password-protect" box, ticked by default; untick it only while testing with sample content, to publish `/` and `/supervisor/` as plain public pages (the run shows a warning): Actions > "Deploy to GitHub Pages" > Run workflow. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.
+- **CI** runs `check`, `test`, `build`, the view-matrix and external-page checks, and `build:protected` with throwaway passwords on every pull request.
+- **Deploy** uses `build:protected` with the two secrets and is manual. The run dialog has a "Password-protect" box, ticked by default; untick it only while testing with sample content, to publish `/researcher/` and `/supervisor/` as plain public pages (the run shows a warning): Actions > "Deploy to GitHub Pages" > Run workflow. To deploy automatically on merge, add `push: { branches: [<default-branch>] }` (the repo's default branch) to `.github/workflows/deploy.yml`.

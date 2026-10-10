@@ -32,7 +32,7 @@ function isShown(collection: string, path: string): boolean {
   return false;
 }
 
-function leaves(value: unknown, path: string, out: { path: string; text: string }[] = []) {
+export function leaves(value: unknown, path: string, out: { path: string; text: string }[] = []) {
   if (typeof value === 'string') out.push({ path, text: value });
   else if (Array.isArray(value)) value.forEach((v, i) => leaves(v, path ? `${path}.${i}` : String(i), out));
   else if (value && typeof value === 'object') {
@@ -50,7 +50,7 @@ export const STEP = 20;
  * part of a long text is still caught. Limit: a paraphrase, or a copied run shorter than about 60
  * characters from the middle of a long line, is not caught.
  */
-function fragmentsOf(text: string, windows = true): string[] {
+export function fragmentsOf(text: string, windows = true): string[] {
   const out: string[] = [];
   for (const line of text.split(/\n+/).map((s) => s.trim()).filter((s) => s.length >= MIN_PROSE)) {
     out.push(line);
@@ -71,7 +71,7 @@ export function externalRules(entries: GuardEntry[]): Rules {
     const mayPublish = e.collection === 'vision' || e.collection === 'archive';
     const pub = mayPublish && isPublished({ data: e.data as { audience: string[]; publishable?: boolean; sample?: boolean } });
     const all = leaves(e.data, '');
-    if (e.body) all.push({ path: 'body', text: e.body });
+    if (e.body) all.push({ path: 'body', text: markdownToText(e.body) });
 
     for (const { path, text } of all) {
       const source = `${e.collection}/${e.id} ${path}`;
@@ -88,6 +88,23 @@ export function externalRules(entries: GuardEntry[]): Rules {
   return { required, forbidden };
 }
 
+/**
+ * Prose of a Markdown body as it reads once rendered: links keep their text, emphasis, headings, list and
+ * quote markers and code fences are dropped. Limit: raw HTML inside Markdown and tables are left as they are.
+ */
+export function markdownToText(md: string): string {
+  return md
+    .replace(/```[^\n]*\n?/g, '')
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+    .replace(/^\s{0,3}>\s?/gm, '')
+    .replace(/^\s*(?:[-*+]|\d+\.)\s+/gm, '')
+    .replace(/(\*\*|__)(.+?)\1/g, '$2')
+    .replace(/(\*|(?<![A-Za-z0-9])_)(.+?)\1/g, '$2')
+    .replace(/`([^`]+)`/g, '$1');
+}
+
 export function decodeEntities(s: string): string {
   return s
     .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
@@ -98,13 +115,29 @@ export function decodeEntities(s: string): string {
     .replace(/&amp;/g, '&');
 }
 
-/** Visible text of a page, one element per line, entities decoded. */
+/**
+ * Markdown rendering turns ' into a curly quote, -- into a dash and ... into an ellipsis, so both the page and
+ * the source are compared in this normalised form.
+ */
+export function normalise(s: string): string {
+  return s
+    .replace(/[\u2018\u2019\u201B]/g, "'")
+    .replace(/[\u201C\u201D\u201E]/g, '"')
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ');
+}
+
+/** Visible text of a page, one block per line, entities decoded. Inline tags (bold, links) do not split text. */
 export function pageText(html: string): string {
-  return decodeEntities(
-    html
-      .replace(/<script[\s\S]*?<\/script>/gi, '\n')
-      .replace(/<style[\s\S]*?<\/style>/gi, '\n')
-      .replace(/<[^>]+>/g, '\n'),
+  return normalise(
+    decodeEntities(
+      html
+        .replace(/<script[\s\S]*?<\/script>/gi, '\n')
+        .replace(/<style[\s\S]*?<\/style>/gi, '\n')
+        .replace(/<\/?(?:strong|em|b|i|a|code|span|mark|small|sup|sub|abbr|u)\b[^>]*>/gi, '')
+        .replace(/<[^>]+>/g, '\n'),
+    ),
   );
 }
 
@@ -114,13 +147,13 @@ export function findProblems(html: string, rules: Rules): string[] {
   const seen = new Set<string>();
   for (const f of rules.forbidden) {
     if (seen.has(f.text)) continue;
-    if (html.includes(f.text) || text.includes(f.text)) {
+    if (html.includes(f.text) || text.includes(normalise(f.text))) {
       seen.add(f.text);
-      problems.push(`leak: ${JSON.stringify(f.text)} (from ${f.source}) appears on the external page`);
+      problems.push(`leak: ${JSON.stringify(f.text)} (from ${f.source}) appears on this page`);
     }
   }
   for (const f of rules.required) {
-    if (!text.includes(f.text)) problems.push(`missing: ${JSON.stringify(f.text)} (from ${f.source}) is not on the external page`);
+    if (!text.includes(normalise(f.text))) problems.push(`missing: ${JSON.stringify(f.text)} (from ${f.source}) is not on this page`);
   }
   return problems;
 }

@@ -1,0 +1,14 @@
+---
+// Switches between the three lenses. Shown on the private views only; the public view has no navigation.
+import { LENS_LABEL, ROUTES, href, type Lens } from '../lib/routes';
+
+interface Props {
+  current: Lens;
+}
+const { current } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const order: Lens[] = ['researcher', 'supervisor', 'public'];
+---
+<nav class="segmented" aria-label="Views">
+  {order.map((l) => <a href={href(ROUTES[l], base)} aria-current={l === current ? 'page' : undefined}>{LENS_LABEL[l]}</a>)}
+</nav>
