@@ -36,8 +36,8 @@ Depends on Phase 1b. Applies the design tokens (Apple-style look).
 - [x] Review step: external content flagged as publishable before it appears: two keys (`external` audience and `publishable: true`), samples never published, plus a post-build guard. Spec: `2026-10-09-external-view/`
 
 ## Phase 5: Role-aware UI (the open requirement in README)
-- [ ] Single navigation that switches lens (researcher / supervisor / external): `/` becomes the public view, `/researcher/` the workspace, `/supervisor/` unchanged, `/public/` a redirect; a switcher on the private views and none on the public one. Spec: `2026-10-10-role-aware-ui/`
-- [ ] Verify the same source content renders in all views without duplication: an automated view-matrix check after the build, plus a duplicate-prose check
+- [x] Single navigation that switches lens (researcher / supervisor / external): `/` becomes the public view, `/researcher/` the workspace, `/supervisor/` unchanged, `/public/` a redirect; a switcher on the private views and none on the public one. Spec: `2026-10-10-role-aware-ui/`
+- [x] Verify the same source content renders in all views without duplication: an automated view-matrix check after the build, plus a duplicate-prose check
 - [ ] Close the README requirement once accepted by the researcher (the researcher sets `status: done` after the acceptance walkthrough)
 
 ## Phase 6: Polish
